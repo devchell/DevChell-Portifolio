@@ -1,4 +1,15 @@
 .portfolio {
+  --font-terminal:
+    "Cascadia Code",
+    "Cascadia Mono",
+    "Consolas",
+    "Lucida Console",
+    "SFMono-Regular",
+    "Menlo",
+    "Monaco",
+    "Liberation Mono",
+    "DejaVu Sans Mono",
+    monospace;
   --page-bg: #f5f5f5;
   --panel-bg: #ffffff;
   --panel-solid: #ffffff;
@@ -11,19 +22,25 @@
   --text-faint: #7a7a7a;
   --text-muted: #8c8c8c;
   --radius-ui: 10px;
-  --code-bg: #151515;
-  --code-top: #101010;
-  --code-surface: #1b1b1b;
-  --code-text: #f3f3f3;
-  --code-keyword: #d6d6d6;
-  --code-string: #ffffff;
-  --code-note: #bdbdbd;
-  --code-placeholder: #b8b8b8;
-  --code-muted: #8f8f8f;
-  --code-cursor: #f8f8f8;
-  --code-label: #dedede;
+  --code-bg: #11131a;
+  --code-top: #0b0d12;
+  --code-surface: #171c27;
+  --code-text: #d7e1f4;
+  --code-keyword: #c084fc;
+  --code-string: #f8d66d;
+  --code-note: #72f1b8;
+  --code-placeholder: #94a6c7;
+  --code-muted: #7f8ba3;
+  --code-cursor: #7dd3fc;
+  --code-label: #8bd5ff;
   --code-border: transparent;
-  --code-gutter: #656565;
+  --code-gutter: #546077;
+  --code-variable: #f3f7ff;
+  --code-operator: #6b768d;
+  --code-quote: #ffb224;
+  --code-boolean: #56a3ff;
+  --code-editor-shadow: 0 28px 72px rgba(10, 14, 24, 0.34);
+  --code-glow: 0 0 0 1px rgba(125, 211, 252, 0.08), 0 24px 60px rgba(96, 165, 250, 0.12);
   --accent: #111111;
   --accent-contrast: #ffffff;
   --highlight: #111111;
@@ -58,18 +75,25 @@
   --text-soft: #bebebe;
   --text-faint: #8f8f8f;
   --text-muted: #9d9d9d;
-  --code-bg: #111111;
-  --code-top: #0c0c0c;
-  --code-surface: #1a1a1a;
-  --code-keyword: #d7d7d7;
-  --code-string: #ffffff;
-  --code-note: #b0b0b0;
-  --code-placeholder: #b7b7b7;
-  --code-muted: #818181;
-  --code-cursor: #ffffff;
-  --code-label: #dcdcdc;
+  --code-bg: #0d1017;
+  --code-top: #080a10;
+  --code-surface: #141926;
+  --code-text: #dbe7ff;
+  --code-keyword: #d18cff;
+  --code-string: #f7d46b;
+  --code-note: #76efc0;
+  --code-placeholder: #95a3c0;
+  --code-muted: #75829d;
+  --code-cursor: #7dd3fc;
+  --code-label: #91d2ff;
   --code-border: transparent;
-  --code-gutter: #5f5f5f;
+  --code-gutter: #4d5870;
+  --code-variable: #f4f7ff;
+  --code-operator: #69758e;
+  --code-quote: #ffb224;
+  --code-boolean: #63a9ff;
+  --code-editor-shadow: 0 32px 78px rgba(0, 0, 0, 0.5);
+  --code-glow: 0 0 0 1px rgba(129, 140, 248, 0.08), 0 26px 64px rgba(34, 197, 94, 0.08);
   --accent: #f3f3f3;
   --accent-contrast: #111111;
   --highlight: #f3f3f3;
@@ -269,7 +293,7 @@
 }
 
 .heroDescription {
-  max-width: 36rem;
+  max-width: 40rem;
   min-height: 3.6em;
   margin-top: 1.65rem;
   color: var(--text-soft);
@@ -331,7 +355,7 @@
 .heroCodeCard {
   border: 0;
   border-radius: var(--radius-ui);
-  box-shadow: var(--shadow-editor);
+  box-shadow: var(--code-editor-shadow), var(--code-glow);
   justify-self: end;
   width: 100%;
   max-width: 500px;
@@ -339,9 +363,11 @@
 }
 
 .editorShell {
+  position: relative;
+  isolation: isolate;
   overflow: hidden;
   background: var(--code-bg);
-  box-shadow: var(--shadow-editor);
+  box-shadow: var(--code-editor-shadow), var(--code-glow);
 }
 
 .editorTopbar {
@@ -377,13 +403,14 @@
 
 .editorCode,
 .contactCodeBlock {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-terminal);
   color: var(--code-text);
+  text-rendering: optimizeLegibility;
 }
 
 .editorCode {
   font-size: 0.95rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.8;
   white-space: pre-wrap;
 }
@@ -442,7 +469,7 @@
   min-height: 2.6rem;
   margin-top: 1rem;
   color: var(--code-muted);
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-terminal);
   font-size: 0.76rem;
   letter-spacing: 0.02em;
 }
@@ -463,27 +490,30 @@
 
 .editorKeyword {
   color: var(--code-keyword);
+  text-shadow: 0 0 18px rgba(192, 132, 252, 0.1);
 }
 
 .editorVariable {
-  color: var(--code-text);
+  color: var(--code-variable);
 }
 
 .editorOperator,
 .editorPunctuation {
-  color: var(--code-muted);
+  color: var(--code-operator);
 }
 
 .editorString {
   color: var(--code-string);
+  text-shadow: 0 0 16px rgba(247, 212, 107, 0.1);
 }
 
 .editorStringQuote {
-  color: #f59e0b;
+  color: var(--code-quote);
 }
 
 .editorBoolean {
-  color: #60a5fa;
+  color: var(--code-boolean);
+  text-shadow: 0 0 18px rgba(99, 169, 255, 0.12);
 }
 
 .editorNote {
@@ -632,6 +662,7 @@
   font-size: 1rem;
   line-height: 1.8;
   min-height: 3.6em;
+  max-width: 40rem;
   text-wrap: pretty;
 }
 
@@ -814,6 +845,7 @@
   font-size: 1rem;
   line-height: 1.75;
   min-height: 3.6em;
+  max-width: 40rem;
 }
 
 .contactHeader {
@@ -855,7 +887,7 @@
   border-right: 0;
   background: var(--code-top);
   color: var(--code-gutter);
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-terminal);
   font-size: 0.8rem;
   line-height: 1.8;
 }
@@ -865,7 +897,7 @@
   gap: 0.6rem;
   padding: 1.5rem 1.6rem 1.15rem;
   font-size: 0.98rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.8;
 }
 
@@ -905,7 +937,7 @@
   color: var(--code-string);
   outline: none;
   font: inherit;
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-terminal);
 }
 
 .codeInlineInput {
@@ -939,7 +971,9 @@
   background: var(--code-surface);
   line-height: 1.75;
   resize: none;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 16px 30px rgba(4, 8, 16, 0.22);
   transition:
     transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 260ms ease,
@@ -1087,10 +1121,40 @@
 }
 
 .footerSignature span {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-terminal);
   font-weight: inherit;
   letter-spacing: inherit;
   color: var(--text-strong);
+}
+
+.editorCode > div,
+.contactCodeBlock > *,
+.heroCodeFooter > span {
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms ease,
+    opacity 220ms ease;
+}
+
+.editorShell:hover .editorCode > div,
+.editorShell:hover .contactCodeBlock > *,
+.editorShell:hover .heroCodeFooter > span {
+  transform: translateX(2px);
+}
+
+.editorCode > div:hover,
+.contactCodeBlock > *:hover {
+  color: var(--code-variable);
+}
+
+.editorCode > div:hover .editorKeyword,
+.contactCodeBlock > *:hover .editorKeyword {
+  color: #e39cff;
+}
+
+.editorCode > div:hover .editorString,
+.contactCodeBlock > *:hover .editorString {
+  color: #ffe08b;
 }
 
 .reveal {
@@ -1262,21 +1326,6 @@
 .heroScrollButton:hover {
   transform: translateY(4px);
   color: var(--text-strong);
-}
-
-.portfolio[data-locale="en"] .heroTitle {
-  font-size: clamp(3.05rem, 5.2vw, 5.3rem);
-}
-
-.portfolio[data-locale="en"] .sectionTitle {
-  font-size: clamp(2.4rem, 4.5vw, 4rem);
-}
-
-.portfolio[data-locale="en"] .heroDescription,
-.portfolio[data-locale="en"] .projectsIntroText,
-.portfolio[data-locale="en"] .contactDescription,
-.portfolio[data-locale="en"] .projectSummaryText {
-  max-width: 40rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
