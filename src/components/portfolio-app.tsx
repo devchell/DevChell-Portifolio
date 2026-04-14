@@ -1442,7 +1442,7 @@ export function PortfolioApp() {
                   <div className={styles.footerRule} />
                   <div className={styles.footerSocials}>
                     <a
-                      href="https://www.instagram.com/devchell"
+                      href="https://www.instagram.com/jv.sntxs"
                       target="_blank"
                       rel="noreferrer"
                       className={styles.footerSocialLink}
@@ -1460,7 +1460,7 @@ export function PortfolioApp() {
                       <GithubIcon />
                     </a>
                     <a
-                      href="https://www.linkedin.com/in/devchell/"
+                      href="https://www.linkedin.com/in/jvsnts/"
                       target="_blank"
                       rel="noreferrer"
                       className={styles.footerSocialLink}
