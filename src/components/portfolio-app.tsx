@@ -51,45 +51,71 @@ const COUNTRY_OPTIONS = [
   { code: "+61", country: "Australia", short: "AU", placeholder: "412 345 678" },
 ] as const;
 
-const PROJECT_BADGE_META: Record<string, { short: string; color: string }> = {
-  "Next.js": { short: "N", color: "#111827" },
-  TypeScript: { short: "TS", color: "#1d4ed8" },
-  Vercel: { short: "VC", color: "#0f172a" },
-  React: { short: "R", color: "#0f766e" },
-  Tailwind: { short: "TW", color: "#0f766e" },
-  Prisma: { short: "PR", color: "#2563eb" },
-  PostgreSQL: { short: "PG", color: "#1d4ed8" },
-  Supabase: { short: "SB", color: "#15803d" },
-  "Node.js": { short: "ND", color: "#3f6212" },
-  Express: { short: "EX", color: "#475569" },
-  "Socket.IO": { short: "IO", color: "#334155" },
-  Drizzle: { short: "DZ", color: "#4d7c0f" },
-  SaaS: { short: "SA", color: "#111827" },
-  CRM: { short: "CRM", color: "#1d4ed8" },
-  Automation: { short: "AT", color: "#15803d" },
-  SEO: { short: "SEO", color: "#c2410c" },
-  Omnichannel: { short: "OM", color: "#7c3aed" },
-  AI: { short: "AI", color: "#9333ea" },
-  "White Label": { short: "WL", color: "#7c3aed" },
-  "Landing Page": { short: "LP", color: "#0f766e" },
-  Dashboard: { short: "DB", color: "#1d4ed8" },
-  Franchise: { short: "FR", color: "#9a3412" },
-  WhatsApp: { short: "WA", color: "#15803d" },
-  Email: { short: "EM", color: "#475569" },
-  UX: { short: "UX", color: "#0369a1" },
+type ProjectBadgeIcon =
+  | "next"
+  | "typescript"
+  | "vercel"
+  | "react"
+  | "tailwind"
+  | "prisma"
+  | "postgres"
+  | "supabase"
+  | "node"
+  | "drizzle"
+  | "saas"
+  | "crm"
+  | "automation"
+  | "seo"
+  | "omnichannel"
+  | "ai"
+  | "whitelabel"
+  | "landing"
+  | "dashboard"
+  | "franchise"
+  | "whatsapp"
+  | "email"
+  | "ux"
+  | "generic";
+
+const PROJECT_BADGE_META: Record<string, { icon: ProjectBadgeIcon }> = {
+  "Next.js": { icon: "next" },
+  TypeScript: { icon: "typescript" },
+  Vercel: { icon: "vercel" },
+  React: { icon: "react" },
+  Tailwind: { icon: "tailwind" },
+  Prisma: { icon: "prisma" },
+  PostgreSQL: { icon: "postgres" },
+  Supabase: { icon: "supabase" },
+  "Node.js": { icon: "node" },
+  Express: { icon: "generic" },
+  "Socket.IO": { icon: "generic" },
+  Drizzle: { icon: "drizzle" },
+  SaaS: { icon: "saas" },
+  CRM: { icon: "crm" },
+  Automation: { icon: "automation" },
+  SEO: { icon: "seo" },
+  Omnichannel: { icon: "omnichannel" },
+  AI: { icon: "ai" },
+  "White Label": { icon: "whitelabel" },
+  "Landing Page": { icon: "landing" },
+  Dashboard: { icon: "dashboard" },
+  Franchise: { icon: "franchise" },
+  WhatsApp: { icon: "whatsapp" },
+  Email: { icon: "email" },
+  UX: { icon: "ux" },
 };
 
 const PROJECT_BADGE_LABELS: Record<Locale, Record<string, string>> = {
   pt: {
     "Next.js": "Next.js",
-    TypeScript: "TypeScript",
+    TypeScript: "TS",
     Vercel: "Vercel",
     React: "React",
     Tailwind: "Tailwind",
     Prisma: "Prisma",
-    PostgreSQL: "PostgreSQL",
+    PostgreSQL: "Postgres",
     Supabase: "Supabase",
-    "Node.js": "Node.js",
+    "Node.js": "Node",
     Express: "Express",
     "Socket.IO": "Socket.IO",
     Drizzle: "Drizzle",
@@ -99,8 +125,8 @@ const PROJECT_BADGE_LABELS: Record<Locale, Record<string, string>> = {
     SEO: "SEO",
     Omnichannel: "Omnichannel",
     AI: "IA",
-    "White Label": "White Label",
-    "Landing Page": "Landing Page",
+    "White Label": "White label",
+    "Landing Page": "Landing",
     Dashboard: "Dashboard",
     Franchise: "Franquias",
     WhatsApp: "WhatsApp",
@@ -109,14 +135,14 @@ const PROJECT_BADGE_LABELS: Record<Locale, Record<string, string>> = {
   },
   en: {
     "Next.js": "Next.js",
-    TypeScript: "TypeScript",
+    TypeScript: "TS",
     Vercel: "Vercel",
     React: "React",
     Tailwind: "Tailwind",
     Prisma: "Prisma",
-    PostgreSQL: "PostgreSQL",
+    PostgreSQL: "Postgres",
     Supabase: "Supabase",
-    "Node.js": "Node.js",
+    "Node.js": "Node",
     Express: "Express",
     "Socket.IO": "Socket.IO",
     Drizzle: "Drizzle",
@@ -126,8 +152,8 @@ const PROJECT_BADGE_LABELS: Record<Locale, Record<string, string>> = {
     SEO: "SEO",
     Omnichannel: "Omnichannel",
     AI: "AI",
-    "White Label": "White Label",
-    "Landing Page": "Landing Page",
+    "White Label": "White label",
+    "Landing Page": "Landing",
     Dashboard: "Dashboard",
     Franchise: "Franchise",
     WhatsApp: "WhatsApp",
@@ -259,8 +285,8 @@ const PROJECTS: Project[] = [
       pt: "Landing page editorial criada para vender um infoproduto de marketing com tese visual forte, copy modular e foco em conversão.",
       en: "Editorial landing page created to sell a marketing infoproduct with a strong visual thesis, modular copy, and conversion focus.",
     },
-    technologies: ["Next.js", "TypeScript", "Vercel"],
-    systems: ["Landing Page", "SEO", "UX"],
+    technologies: ["Next.js", "Vercel"],
+    systems: ["Landing Page", "SEO"],
     screenshots: [
       "/projects/vetta/vetta-01.png",
       "/projects/vetta/vetta-02.png",
@@ -281,8 +307,8 @@ const PROJECTS: Project[] = [
       pt: "Sistema de captação e gestão comercial com landing pública, login interno, fluxo de orçamentos, catálogo, métricas e operação industrial estruturada.",
       en: "Lead capture and commercial operations system with a public landing, internal login, quote flow, catalog, metrics, and a structured industrial workflow.",
     },
-    technologies: ["Next.js", "Tailwind", "Supabase", "PostgreSQL"],
-    systems: ["CRM", "Automation", "SEO", "Dashboard"],
+    technologies: ["Next.js", "Supabase", "PostgreSQL"],
+    systems: ["CRM", "Automation", "SEO"],
     screenshots: [
       "/projects/ultrarubber/ultrarubber-01.png",
       "/projects/ultrarubber/ultrarubber-02.png",
@@ -296,15 +322,15 @@ const PROJECTS: Project[] = [
     url: "",
     locked: true,
     title: {
-      pt: "CRM & Landing Page",
-      en: "CRM & Landing Page",
+      pt: "Landing Page & CRM",
+      en: "Landing Page & CRM",
     },
     description: {
       pt: "CRM single-tenant para operação de serviços, centralizando leads, agenda, financeiro, conteúdo público e automações de WhatsApp e e-mail em um único ecossistema.",
       en: "Single-tenant CRM for a services operation, centralizing leads, scheduling, finance, public content, and WhatsApp/email automations in one ecosystem.",
     },
-    technologies: ["Next.js", "Tailwind", "Prisma", "PostgreSQL"],
-    systems: ["CRM", "Landing Page", "WhatsApp", "Email"],
+    technologies: ["Next.js", "Prisma", "PostgreSQL"],
+    systems: ["CRM", "WhatsApp", "Email"],
     screenshots: [
       "/projects/viviani/viviani-01.png",
       "/projects/viviani/viviani-02.png",
@@ -324,8 +350,8 @@ const PROJECTS: Project[] = [
       pt: "Suite multitenant para atendimento omnichannel, gestão operacional, IA, módulos white-label e expansão por produto dentro do ecossistema TyviaHub.",
       en: "Multi-tenant suite for omnichannel support, operational management, AI, white-label modules, and product-based expansion across the TyviaHub ecosystem.",
     },
-    technologies: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-    systems: ["SaaS", "Omnichannel", "AI", "White Label"],
+    technologies: ["React", "Node.js", "PostgreSQL"],
+    systems: ["SaaS", "Omnichannel", "AI"],
     screenshots: [
       "/projects/tyviahub/tyviahub-01.png",
       "/projects/tyviahub/tyviahub-02.png",
@@ -345,8 +371,8 @@ const PROJECTS: Project[] = [
       pt: "Plataforma multi-tenant para operação master, franquias e portal do cliente, com onboarding, linhas, comissões, vendas e dashboards operacionais.",
       en: "Multi-tenant platform for master operations, franchise management, and customer portals, with onboarding, lines, commissions, sales, and operational dashboards.",
     },
-    technologies: ["Next.js", "TypeScript", "Drizzle", "PostgreSQL"],
-    systems: ["SaaS", "White Label", "Franchise", "Dashboard"],
+    technologies: ["Next.js", "TypeScript", "PostgreSQL"],
+    systems: ["SaaS", "Franchise", "White Label"],
     screenshots: [
       "/projects/akimais/akimais-01.png",
       "/projects/akimais/akimais-02.png",
@@ -468,7 +494,7 @@ function formatCodeKey(label: string, width = 18) {
 }
 
 function getProjectBadgeMeta(label: string) {
-  return PROJECT_BADGE_META[label] ?? { short: label.slice(0, 2).toUpperCase(), color: "#334155" };
+  return PROJECT_BADGE_META[label] ?? { icon: "generic" };
 }
 
 function isValidEmail(value: string) {
@@ -757,6 +783,193 @@ function InstagramIcon() {
   );
 }
 
+function ProjectBadgeIcon({ icon }: { icon: ProjectBadgeIcon }) {
+  const sharedProps = {
+    stroke: "currentColor",
+    strokeWidth: 1.65,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  switch (icon) {
+    case "next":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="5.8" {...sharedProps} />
+          <path d="M5.9 5.3v5.4l4.1-5.4v5.4" {...sharedProps} />
+        </svg>
+      );
+    case "typescript":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4.2 5.1h7.6M8 5.1v5.8M10.1 6.4h2.1M11.2 6.4v4.5" {...sharedProps} />
+        </svg>
+      );
+    case "vercel":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3.7 12 11H4L8 3.7Z" {...sharedProps} />
+        </svg>
+      );
+    case "react":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <ellipse cx="8" cy="8" rx="5.3" ry="2.2" {...sharedProps} />
+          <ellipse cx="8" cy="8" rx="5.3" ry="2.2" transform="rotate(60 8 8)" {...sharedProps} />
+          <ellipse cx="8" cy="8" rx="5.3" ry="2.2" transform="rotate(-60 8 8)" {...sharedProps} />
+          <circle cx="8" cy="8" r="1.05" fill="currentColor" />
+        </svg>
+      );
+    case "tailwind":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4.2 6.2c.7-1.3 1.6-1.9 2.9-1.9 1.6 0 2 1.5 2.9 1.5.8 0 1.5-.3 2.1-1" {...sharedProps} />
+          <path d="M3.9 10.2c.8-1.2 1.8-1.8 3-1.8 1.6 0 2 1.5 2.9 1.5.8 0 1.5-.3 2.1-1" {...sharedProps} />
+        </svg>
+      );
+    case "prisma":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 4.2 10.8 5.8 8.2 11.8 4.7 6.9 6 4.2Z" {...sharedProps} />
+        </svg>
+      );
+    case "postgres":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <ellipse cx="8" cy="4.9" rx="3.5" ry="1.8" {...sharedProps} />
+          <path d="M4.5 4.9v5.1c0 1 1.5 1.7 3.5 1.7s3.5-.7 3.5-1.7V4.9" {...sharedProps} />
+          <path d="M4.5 7.3c0 .9 1.5 1.7 3.5 1.7s3.5-.8 3.5-1.7" {...sharedProps} />
+        </svg>
+      );
+    case "supabase":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M5.4 3.8h3.9L6.6 12.2H3.4l2-6.3Z" {...sharedProps} />
+          <path d="M8.8 3.8h3.8l-1.9 5.8H7.1" {...sharedProps} />
+        </svg>
+      );
+    case "node":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="m8 3.2 3.8 2.2v5.2L8 12.8l-3.8-2.2V5.4L8 3.2Z" {...sharedProps} />
+          <path d="M6.9 6.1v3.8l2.2-3.8v3.8" {...sharedProps} />
+        </svg>
+      );
+    case "drizzle":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3.8c0 2-2 2.7-2 4.7 0 1.4.9 2.5 2 3.6 1.1-1.1 2-2.2 2-3.6C10 6.5 8 5.8 8 3.8Z" {...sharedProps} />
+        </svg>
+      );
+    case "saas":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="4" height="4" rx="0.9" {...sharedProps} />
+          <rect x="8.5" y="3.5" width="4" height="4" rx="0.9" {...sharedProps} />
+          <rect x="3.5" y="8.5" width="4" height="4" rx="0.9" {...sharedProps} />
+          <rect x="8.5" y="8.5" width="4" height="4" rx="0.9" {...sharedProps} />
+        </svg>
+      );
+    case "crm":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="6" cy="6" r="1.7" {...sharedProps} />
+          <circle cx="10.5" cy="7.1" r="1.3" {...sharedProps} />
+          <path d="M4 11.5c.6-1.5 1.8-2.3 3.7-2.3s3.1.8 3.7 2.3" {...sharedProps} />
+        </svg>
+      );
+    case "automation":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 11.2h2.3L8 4.9l1.7 6.3H12" {...sharedProps} />
+          <path d="M10.7 4.8h1.6v1.6M12.3 6.4 9.9 8.8" {...sharedProps} />
+        </svg>
+      );
+    case "seo":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="6.7" cy="6.7" r="2.7" {...sharedProps} />
+          <path d="m8.9 8.9 2.8 2.8M5.3 7l.9-.9 1 1L9 5.3" {...sharedProps} />
+        </svg>
+      );
+    case "omnichannel":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="4.3" cy="4.6" r="1.1" {...sharedProps} />
+          <circle cx="11.7" cy="4.6" r="1.1" {...sharedProps} />
+          <circle cx="4.3" cy="11.4" r="1.1" {...sharedProps} />
+          <circle cx="11.7" cy="11.4" r="1.1" {...sharedProps} />
+          <path d="M5.4 4.6h5.2M4.3 5.7v4.6M11.7 5.7v4.6M5.4 11.4h5.2" {...sharedProps} />
+        </svg>
+      );
+    case "ai":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3.8 9 6.1l2.5.3-1.9 1.7.5 2.4L8 9.5l-2.1 1 .5-2.4-1.9-1.7 2.5-.3L8 3.8Z" {...sharedProps} />
+        </svg>
+      );
+    case "whitelabel":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="3.8" y="5.2" width="6.6" height="6.6" rx="1.1" {...sharedProps} />
+          <path d="M5.9 3.8h6.3v6.3" {...sharedProps} />
+        </svg>
+      );
+    case "landing":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="3.2" y="3.6" width="9.6" height="8.8" rx="1.3" {...sharedProps} />
+          <path d="M3.2 6h9.6M5 8.2h2.8M5 10h5.6" {...sharedProps} />
+        </svg>
+      );
+    case "dashboard":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="3.2" y="3.6" width="4.1" height="3.4" rx="0.8" {...sharedProps} />
+          <rect x="8.7" y="3.6" width="4.1" height="5.8" rx="0.8" {...sharedProps} />
+          <rect x="3.2" y="8.2" width="4.1" height="4.2" rx="0.8" {...sharedProps} />
+          <rect x="8.7" y="10.2" width="4.1" height="2.2" rx="0.8" {...sharedProps} />
+        </svg>
+      );
+    case "franchise":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="4.4" r="1.3" {...sharedProps} />
+          <circle cx="4.7" cy="11.1" r="1.3" {...sharedProps} />
+          <circle cx="11.3" cy="11.1" r="1.3" {...sharedProps} />
+          <path d="M8 5.7v2.2M8 7.9 5.6 9.6M8 7.9l2.4 1.7" {...sharedProps} />
+        </svg>
+      );
+    case "whatsapp":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 3.7a4.5 4.5 0 0 0-3.9 6.9l-.5 2.3 2.4-.5A4.5 4.5 0 1 0 8 3.7Z" {...sharedProps} />
+          <path d="M6.6 6.4c-.2.4-.2 1 .1 1.4.6 1 1.4 1.8 2.4 2.4.5.3 1 .3 1.4.1" {...sharedProps} />
+        </svg>
+      );
+    case "email":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="3.2" y="4.5" width="9.6" height="7" rx="1.1" {...sharedProps} />
+          <path d="M3.8 5.3 8 8.1l4.2-2.8" {...sharedProps} />
+        </svg>
+      );
+    case "ux":
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 4.6h8M4 8h4.8M4 11.4h6.1" {...sharedProps} />
+          <path d="m10.6 9.1 1.8 1-1.8 1.1" {...sharedProps} />
+        </svg>
+      );
+    default:
+      return (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="4.3" {...sharedProps} />
+        </svg>
+      );
+  }
+}
+
 function ProjectBadge({
   badge,
   label,
@@ -768,15 +981,8 @@ function ProjectBadge({
 
   return (
     <span className={styles.stackBadge}>
-      <span
-        className={styles.stackBadgeMark}
-        style={{
-          backgroundColor: meta.color,
-          color: meta.color === "#facc15" ? "#111111" : "#ffffff",
-        }}
-        aria-hidden="true"
-      >
-        {meta.short}
+      <span className={styles.stackBadgeMark} aria-hidden="true">
+        <ProjectBadgeIcon icon={meta.icon} />
       </span>
       <span>{label}</span>
     </span>
@@ -1527,30 +1733,24 @@ export function PortfolioApp() {
 
                   <div className={styles.projectUtilities}>
                     <div className={styles.projectBadgeGroups}>
-                      <div className={styles.projectBadgeRow}>
-                        <p className={styles.projectBadgeLabel}>{copy.projectTechLabel}</p>
-                        <div className={styles.projectStacks}>
-                          {activeProject.technologies.map((badge) => (
-                            <ProjectBadge
-                              key={`${activeProject.name}-tech-${badge}`}
-                              badge={badge}
-                              label={badgeLabels[badge] ?? badge}
-                            />
-                          ))}
-                        </div>
+                      <div className={styles.projectBadgeRow} aria-label={copy.projectTechLabel}>
+                        {activeProject.technologies.map((badge) => (
+                          <ProjectBadge
+                            key={`${activeProject.name}-tech-${badge}`}
+                            badge={badge}
+                            label={badgeLabels[badge] ?? badge}
+                          />
+                        ))}
                       </div>
 
-                      <div className={styles.projectBadgeRow}>
-                        <p className={styles.projectBadgeLabel}>{copy.projectSystemsLabel}</p>
-                        <div className={styles.projectStacks}>
-                          {activeProject.systems.map((badge) => (
-                            <ProjectBadge
-                              key={`${activeProject.name}-system-${badge}`}
-                              badge={badge}
-                              label={badgeLabels[badge] ?? badge}
-                            />
-                          ))}
-                        </div>
+                      <div className={styles.projectBadgeRow} aria-label={copy.projectSystemsLabel}>
+                        {activeProject.systems.map((badge) => (
+                          <ProjectBadge
+                            key={`${activeProject.name}-system-${badge}`}
+                            badge={badge}
+                            label={badgeLabels[badge] ?? badge}
+                          />
+                        ))}
                       </div>
                     </div>
 
