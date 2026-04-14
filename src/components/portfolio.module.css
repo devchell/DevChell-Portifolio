@@ -685,7 +685,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
-  width: min(100%, 1024px);
+  width: min(100%, 920px);
   margin: 0 auto;
   border: 0;
   border-radius: var(--radius-ui);
@@ -697,8 +697,8 @@
 .projectFrame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 8.25;
-  max-height: 390px;
+  aspect-ratio: 16 / 10;
+  max-height: 360px;
   overflow: hidden;
   background: var(--panel-muted);
 }
@@ -721,7 +721,7 @@
 }
 
 .projectImage {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center top;
 }
 
@@ -1637,7 +1637,8 @@
   }
 
   .projectFrame {
-    aspect-ratio: 16 / 8.9;
+    aspect-ratio: 16 / 10.2;
+    max-height: 320px;
   }
 
   .projectUtilities,
@@ -1769,8 +1770,8 @@
   }
 
   .projectFrame {
-    aspect-ratio: 16 / 9.35;
-    max-height: 232px;
+    aspect-ratio: 16 / 10.8;
+    max-height: 244px;
   }
 
   .carouselArrow {

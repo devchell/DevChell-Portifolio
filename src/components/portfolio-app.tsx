@@ -276,7 +276,8 @@ const COPY = {
 const PROJECTS: Project[] = [
   {
     name: "Vetta",
-    url: "https://vetta-devchells-projects.vercel.app",
+    url: "",
+    locked: true,
     title: {
       pt: "Landing Page",
       en: "Landing Page",
@@ -1715,7 +1716,8 @@ export function PortfolioApp() {
                       src={shot}
                       alt={`${activeProject.name} ${copy.screenshotAlt} ${index + 1}`}
                       fill
-                      sizes="(max-width: 1040px) 100vw, 964px"
+                      quality={95}
+                      sizes="(max-width: 1040px) calc(100vw - 32px), 920px"
                     />
                   </div>
                 ))}
