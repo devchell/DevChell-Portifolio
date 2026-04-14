@@ -886,13 +886,15 @@ export function PortfolioApp() {
                     </div>
                     <div className={styles.heroFocusLine}>
                       {formatCodeKey(codeCopy.hero.focusKey)}
-                      <span className={styles.editorStringQuote}>{'"'}</span>
-                      <span className={`${styles.editorString} ${styles.heroFocusValue}`}>
-                        {typedHeroFocus}
+                      <span className={styles.heroFocusTyping}>
+                        <span className={styles.editorStringQuote}>{'"'}</span>
+                        <span className={`${styles.editorString} ${styles.heroFocusValue}`}>
+                          {typedHeroFocus}
+                        </span>
+                        <span className={styles.codeCursor} aria-hidden="true" />
+                        <span className={styles.editorStringQuote}>{'"'}</span>
+                        <span className={styles.editorPunctuation}>,</span>
                       </span>
-                      <span className={styles.codeCursor} aria-hidden="true" />
-                      <span className={styles.editorStringQuote}>{'"'}</span>
-                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.hero.executionKey)}

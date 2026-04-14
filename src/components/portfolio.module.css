@@ -468,11 +468,13 @@
   min-height: 3.7em;
 }
 
+.heroFocusTyping {
+  display: inline;
+  overflow-wrap: anywhere;
+}
+
 .heroFocusValue {
-  display: inline-block;
-  width: min(24ch, calc(100% - 9ch));
-  min-height: 3.6em;
-  vertical-align: top;
+  display: inline;
 }
 
 .heroCodeFooter {
@@ -1531,9 +1533,8 @@
     min-height: 5.2em;
   }
 
-  .heroFocusValue {
-    width: min(15ch, calc(100% - 7.2ch));
-    min-height: 5em;
+  .heroFocusTyping {
+    overflow-wrap: anywhere;
   }
 
   .editorCode,
