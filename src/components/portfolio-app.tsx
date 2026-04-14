@@ -7,6 +7,7 @@ import styles from "./portfolio.module.css";
 type Theme = "light" | "dark";
 type Locale = "pt" | "en";
 type ContactState = "idle" | "loading" | "success" | "error";
+type HeroTypingPhase = "typing" | "holding" | "deleting";
 
 type Project = {
   name: string;
@@ -20,8 +21,10 @@ type Project = {
 const SECTION_IDS = ["hero", "sobre", "projetos", "contato"] as const;
 const CONTACT_EMAIL = "rodriguessnts@outlook.com";
 const WHATSAPP_NUMBER = "5511978290118";
-const WHATSAPP_MESSAGE =
-  "Olá, João. Quero solicitar um orçamento de serviço para um projeto.";
+const WHATSAPP_MESSAGE = {
+  pt: "Olá, João. Quero solicitar um orçamento de serviço para um projeto.",
+  en: "Hi João, I would like to request a quote for a project.",
+} as const;
 
 const STACK_ICON_MAP: Record<string, string> = {
   "Next.js": "/stacks/nextjs.svg",
@@ -163,6 +166,116 @@ const PROJECTS: Project[] = [
     ],
   },
 ];
+
+const HERO_FOCUS_ROTATIONS = {
+  pt: [
+    "SaaS + CRM + Landing Pages",
+    "Sistemas Web + Automação",
+    "Dashboards + APIs + Deploy",
+  ],
+  en: [
+    "SaaS + CRM + Landing Pages",
+    "Web Systems + Automation",
+    "Dashboards + APIs + Deploy",
+  ],
+} as const;
+
+const CODE_COPY = {
+  pt: {
+    hero: {
+      objectName: "builder",
+      focusKey: "focus",
+      executionKey: "execution",
+      executionValue: "Design + Code + Deploy",
+      deliveryKey: "delivery",
+      deliveryValue: "Sistemas claros e escaláveis",
+      statusKey: "status",
+      statusValue: "online",
+      footerComment: "// disponível para freela",
+      footerMeta: "arquitetura limpa | clareza visual",
+    },
+    about: {
+      objectName: "developer",
+      nameKey: "name",
+      aliasKey: "alias",
+      stackKey: "stack",
+      stackLines: [
+        ["Next.js", "TypeScript", "Node.js"],
+        ["Java", "C#", "AWS", "LLMs"],
+      ],
+      specialtiesKey: "especialidades",
+      specialtyLines: [
+        ["SaaS", "CRM", "Landing Page"],
+        ["UI/UX", "Automação", "AppSec", "IA"],
+      ],
+      educationKey: "formacao",
+      educationValue: "Ciência da Computação",
+      postGradKey: "posGrad",
+      postGradValue: "Arquitetura & Engenharia de IA",
+      freelanceKey: "freelance",
+      availableKey: "disponivel",
+      approachKey: "approach",
+      approachValue: "clareza acima do ruído",
+    },
+    contact: {
+      objectName: "solicitacaoProjeto",
+      nameKey: "nome",
+      emailKey: "email",
+      whatsappKey: "whatsapp",
+      scopeKey: "escopo",
+      scopeLabel: "Escopo do projeto",
+    },
+  },
+  en: {
+    hero: {
+      objectName: "builder",
+      focusKey: "focus",
+      executionKey: "execution",
+      executionValue: "Design + Code + Deploy",
+      deliveryKey: "delivery",
+      deliveryValue: "Clear and scalable systems",
+      statusKey: "status",
+      statusValue: "online",
+      footerComment: "// available for freelance",
+      footerMeta: "clean architecture | visual clarity",
+    },
+    about: {
+      objectName: "developer",
+      nameKey: "name",
+      aliasKey: "alias",
+      stackKey: "stack",
+      stackLines: [
+        ["Next.js", "TypeScript", "Node.js"],
+        ["Java", "C#", "AWS", "LLMs"],
+      ],
+      specialtiesKey: "specialties",
+      specialtyLines: [
+        ["SaaS", "CRM", "Landing Pages"],
+        ["UI/UX", "Automation", "AppSec", "AI"],
+      ],
+      educationKey: "education",
+      educationValue: "Computer Science",
+      postGradKey: "postGrad",
+      postGradValue: "AI Architecture & Engineering",
+      freelanceKey: "freelance",
+      availableKey: "available",
+      approachKey: "approach",
+      approachValue: "clarity over noise",
+    },
+    contact: {
+      objectName: "projectRequest",
+      nameKey: "name",
+      emailKey: "email",
+      whatsappKey: "whatsapp",
+      scopeKey: "scope",
+      scopeLabel: "Project scope",
+    },
+  },
+} as const;
+
+function formatCodeKey(label: string, width = 18) {
+  return `  ${label}:`.padEnd(width, " ");
+}
 
 function formatStatus(locale: Locale, state: ContactState) {
   const messages = COPY[locale];
@@ -309,14 +422,16 @@ function GithubIcon() {
 
 function LinkedinIcon() {
   return (
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
-        d="M7 9v8M7 6.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Zm4 10.8v-4.2a2 2 0 0 1 4 0V17m-4-5.2V9m0 2.8A3.5 3.5 0 0 1 14.2 10c2.2 0 3.8 1.6 3.8 4.5V17"
+        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      <rect x="2.5" y="9" width="4" height="12" rx="1" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="4.5" cy="4.5" r="1.25" fill="currentColor" />
     </svg>
   );
 }
@@ -347,6 +462,9 @@ export function PortfolioApp() {
   const [projectIndex, setProjectIndex] = useState(0);
   const [screenshotIndex, setScreenshotIndex] = useState(0);
   const [contactState, setContactState] = useState<ContactState>("idle");
+  const [heroFocusIndex, setHeroFocusIndex] = useState(0);
+  const [heroTypingPhase, setHeroTypingPhase] = useState<HeroTypingPhase>("holding");
+  const [typedHeroFocus, setTypedHeroFocus] = useState<string>("SaaS + CRM + Landing Pages");
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
@@ -356,7 +474,10 @@ export function PortfolioApp() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const copy = COPY[locale];
+  const codeCopy = CODE_COPY[locale];
   const activeProject = PROJECTS[projectIndex];
+  const heroFocusRotations = HERO_FOCUS_ROTATIONS[locale];
+  const activeHeroFocus = heroFocusRotations[heroFocusIndex];
   const heroTags = copy.heroMeta
     .split("·")
     .map((item) => item.trim())
@@ -370,6 +491,40 @@ export function PortfolioApp() {
   useEffect(() => {
     window.localStorage.setItem("portfolio-locale", locale);
   }, [locale]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(
+      () => {
+        if (heroTypingPhase === "holding") {
+          setHeroTypingPhase("deleting");
+          return;
+        }
+
+        if (heroTypingPhase === "deleting") {
+          if (typedHeroFocus.length === 0) {
+            setHeroFocusIndex((current) => (current + 1) % heroFocusRotations.length);
+            setHeroTypingPhase("typing");
+            return;
+          }
+
+          setTypedHeroFocus((current) => current.slice(0, -1));
+          return;
+        }
+
+        if (typedHeroFocus === activeHeroFocus) {
+          setHeroTypingPhase("holding");
+          return;
+        }
+
+        setTypedHeroFocus(activeHeroFocus.slice(0, typedHeroFocus.length + 1));
+      },
+      heroTypingPhase === "holding" ? 1450 : heroTypingPhase === "deleting" ? 45 : 68,
+    );
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [activeHeroFocus, heroFocusRotations.length, heroTypingPhase, typedHeroFocus]);
 
   const rotateScreens = useEffectEvent(() => {
     setScreenshotIndex((current) => {
@@ -442,6 +597,16 @@ export function PortfolioApp() {
     section?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function handleLocaleToggle() {
+    setLocale((current) => {
+      const next = current === "pt" ? "en" : "pt";
+      setHeroFocusIndex(0);
+      setTypedHeroFocus(HERO_FOCUS_ROTATIONS[next][0]);
+      setHeroTypingPhase("holding");
+      return next;
+    });
+  }
+
   function navigateProject(direction: "next" | "prev") {
     startTransition(() => {
       setProjectIndex((current) => {
@@ -487,11 +652,11 @@ export function PortfolioApp() {
   }
 
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    WHATSAPP_MESSAGE,
+    WHATSAPP_MESSAGE[locale],
   )}`;
 
   return (
-    <div className={styles.portfolio} data-theme={theme}>
+    <div className={styles.portfolio} data-locale={locale} data-theme={theme}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <button
@@ -533,7 +698,7 @@ export function PortfolioApp() {
             <button
               type="button"
               className={`${styles.iconButton} ${styles.themeFade}`}
-              onClick={() => setLocale((current) => (current === "pt" ? "en" : "pt"))}
+              onClick={handleLocaleToggle}
               aria-label="Alternar idioma"
             >
               <GlobeIcon />
@@ -555,16 +720,16 @@ export function PortfolioApp() {
           <div className={`${styles.sectionInner} ${styles.heroInner}`}>
             <div className={styles.heroGrid}>
               <div className={styles.heroIntro}>
-                <div
-                  className={`${styles.heroLine} ${styles.reveal} ${styles.revealVisible}`}
-                  data-reveal
-                />
                 <p
                   className={`${styles.eyebrow} ${styles.reveal} ${styles.revealVisible}`}
                   data-reveal
                 >
                   {copy.heroEyebrow}
                 </p>
+                <div
+                  className={`${styles.heroLine} ${styles.reveal} ${styles.revealVisible}`}
+                  data-reveal
+                />
                 <h1
                   className={`${styles.heroTitle} ${styles.reveal} ${styles.revealVisible}`}
                   data-reveal
@@ -619,32 +784,35 @@ export function PortfolioApp() {
                   <span className={styles.editorDot} data-tone="green" />
                 </div>
                 <div className={styles.editorBody}>
-                  <pre className={`${styles.editorCode} ${styles.heroCode}`}>
+                  <div className={`${styles.editorCode} ${styles.heroCode}`}>
                     <div>
                       <span className={styles.editorKeyword}>const</span>
-                      {" builder = {"}
+                      {` ${codeCopy.hero.objectName} = {`}
                     </div>
                     <div>
-                      {'  focus:        '}
-                      <span className={styles.editorString}>{'"SaaS + CRM + Landing Pages"'}</span>,
+                      {formatCodeKey(codeCopy.hero.focusKey)}
+                      <span className={styles.editorString}>{'"'}</span>
+                      <span className={styles.editorString}>{typedHeroFocus}</span>
+                      <span className={styles.codeCursor} aria-hidden="true" />
+                      <span className={styles.editorString}>{'"'}</span>,
                     </div>
                     <div>
-                      {'  execution:    '}
-                      <span className={styles.editorString}>{'"Design + Code + Deploy"'}</span>,
+                      {formatCodeKey(codeCopy.hero.executionKey)}
+                      <span className={styles.editorString}>{`"${codeCopy.hero.executionValue}"`}</span>,
                     </div>
                     <div>
-                      {'  delivery:     '}
-                      <span className={styles.editorString}>{'"Produtos claros e escaláveis"'}</span>,
+                      {formatCodeKey(codeCopy.hero.deliveryKey)}
+                      <span className={styles.editorString}>{`"${codeCopy.hero.deliveryValue}"`}</span>,
                     </div>
                     <div>
-                      {'  status:       '}
-                      <span className={styles.editorNote}>online</span>,
+                      {formatCodeKey(codeCopy.hero.statusKey)}
+                      <span className={styles.editorNote}>{codeCopy.hero.statusValue}</span>,
                     </div>
                     <div>{"}"}</div>
-                  </pre>
+                  </div>
                   <div className={styles.heroCodeFooter}>
-                    <span className={styles.heroCodeAccent}>{"// available for freelance"}</span>
-                    <span>{"clean architecture | visual clarity"}</span>
+                    <span className={styles.heroCodeAccent}>{codeCopy.hero.footerComment}</span>
+                    <span>{codeCopy.hero.footerMeta}</span>
                   </div>
                 </div>
               </div>
@@ -731,78 +899,71 @@ export function PortfolioApp() {
                   <span className={styles.editorDot} data-tone="green" />
                 </div>
                 <div className={styles.editorBody}>
-                  <pre className={styles.editorCode}>
+                  <div className={styles.editorCode}>
                     <div>
                       <span className={styles.editorKeyword}>const</span>
-                      {" developer = {"}
+                      {` ${codeCopy.about.objectName} = {`}
                     </div>
                     <div>
-                      {'  name:         '}
+                      {formatCodeKey(codeCopy.about.nameKey)}
                       <span className={styles.editorString}>{'"João Vitor Rodrigues"'}</span>,
                     </div>
                     <div>
-                      {'  alias:        '}
+                      {formatCodeKey(codeCopy.about.aliasKey)}
                       <span className={styles.editorString}>{'"Chell"'}</span>,
                     </div>
                     <div>&nbsp;</div>
-                    <div>{"  stack: ["}</div>
-                    <div>
-                      {'    '}
-                      <span className={styles.editorString}>{'"Next.JS"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"TypeScript"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"Node.JS"'}</span>,
-                    </div>
-                    <div>
-                      {'    '}
-                      <span className={styles.editorString}>{'"Java"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"C#"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"AWS"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"LLMs"'}</span>
-                    </div>
+                    <div>{`${formatCodeKey(codeCopy.about.stackKey)}[`}</div>
+                    {codeCopy.about.stackLines.map((line, index) => (
+                      <div key={`stack-line-${index}`}>
+                        {"    "}
+                        {line.map((item, itemIndex) => (
+                          <span key={`${item}-${itemIndex}`}>
+                            <span className={styles.editorString}>{`"${item}"`}</span>
+                            {itemIndex < line.length - 1 ? ", " : ""}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
                     <div>{"  ],"}</div>
                     <div>&nbsp;</div>
-                    <div>{"  especialidades: ["}</div>
-                    <div>
-                      {'    '}
-                      <span className={styles.editorString}>{'"SaaS"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"CRM"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"Landing Page"'}</span>,
-                    </div>
-                    <div>
-                      {'    '}
-                      <span className={styles.editorString}>{'"UI/UX"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"Automação"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"AppSec"'}</span>,{" "}
-                      <span className={styles.editorString}>{'"AI"'}</span>
-                    </div>
+                    <div>{`${formatCodeKey(codeCopy.about.specialtiesKey)}[`}</div>
+                    {codeCopy.about.specialtyLines.map((line, index) => (
+                      <div key={`specialty-line-${index}`}>
+                        {"    "}
+                        {line.map((item, itemIndex) => (
+                          <span key={`${item}-${itemIndex}`}>
+                            <span className={styles.editorString}>{`"${item}"`}</span>
+                            {itemIndex < line.length - 1 ? ", " : ""}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
                     <div>{"  ],"}</div>
                     <div>&nbsp;</div>
                     <div>
-                      {'  formacao:     '}
-                      <span className={styles.editorString}>{'"Ciência da Computação"'}</span>,
+                      {formatCodeKey(codeCopy.about.educationKey)}
+                      <span className={styles.editorString}>{`"${codeCopy.about.educationValue}"`}</span>,
                     </div>
                     <div>
-                      {'  posGrad:      '}
-                      <span className={styles.editorString}>
-                        {'"Arquitetura & Engenharia de IA"'}
-                      </span>
-                      ,
+                      {formatCodeKey(codeCopy.about.postGradKey)}
+                      <span className={styles.editorString}>{`"${codeCopy.about.postGradValue}"`}</span>,
                     </div>
                     <div>&nbsp;</div>
                     <div>
-                      {"  freelance:    "}
+                      {formatCodeKey(codeCopy.about.freelanceKey)}
                       <span className={styles.editorNote}>true</span>,
                     </div>
                     <div>
-                      {"  disponivel:   "}
+                      {formatCodeKey(codeCopy.about.availableKey)}
                       <span className={styles.editorNote}>true</span>,
                     </div>
                     <div>
-                      {"  approach:     "}
-                      <span className={styles.editorString}>{'"clarity over noise"'}</span>,
+                      {formatCodeKey(codeCopy.about.approachKey)}
+                      <span className={styles.editorString}>{`"${codeCopy.about.approachValue}"`}</span>,
                     </div>
                     <div>{"}"}</div>
-                  </pre>
+                  </div>
                 </div>
               </div>
             </div>
@@ -959,10 +1120,12 @@ export function PortfolioApp() {
                     <div className={styles.contactCodeBlock}>
                       <div className={styles.codeLine}>
                         <span className={styles.editorKeyword}>const</span>
-                        {" projectRequest = {"}
+                        {` ${codeCopy.contact.objectName} = {`}
                       </div>
                       <label className={styles.codeFieldRow}>
-                        <span className={styles.codeLabel}>{'  name:      '}</span>
+                        <span className={styles.codeLabel}>
+                          {formatCodeKey(codeCopy.contact.nameKey)}
+                        </span>
                         <span className={styles.editorString}>{'"'}</span>
                         <input
                           name="name"
@@ -980,7 +1143,9 @@ export function PortfolioApp() {
                         <span className={styles.editorString}>{'"'}</span>,
                       </label>
                       <label className={styles.codeFieldRow}>
-                        <span className={styles.codeLabel}>{'  email:     '}</span>
+                        <span className={styles.codeLabel}>
+                          {formatCodeKey(codeCopy.contact.emailKey)}
+                        </span>
                         <span className={styles.editorString}>{'"'}</span>
                         <input
                           name="email"
@@ -999,7 +1164,9 @@ export function PortfolioApp() {
                         <span className={styles.editorString}>{'"'}</span>,
                       </label>
                       <label className={styles.codeFieldRow}>
-                        <span className={styles.codeLabel}>{'  whatsapp:  '}</span>
+                        <span className={styles.codeLabel}>
+                          {formatCodeKey(codeCopy.contact.whatsappKey)}
+                        </span>
                         <span className={styles.editorString}>{'"'}</span>
                         <input
                           name="whatsapp"
@@ -1016,9 +1183,9 @@ export function PortfolioApp() {
                         />
                         <span className={styles.editorString}>{'"'}</span>,
                       </label>
-                      <div className={styles.codeLine}>{'  scope:      `'} </div>
+                      <div className={styles.codeLine}>{`${formatCodeKey(codeCopy.contact.scopeKey)}\``} </div>
                       <label className={styles.codeTextareaWrap}>
-                        <span className={styles.srOnly}>Escopo do projeto</span>
+                        <span className={styles.srOnly}>{codeCopy.contact.scopeLabel}</span>
                         <textarea
                           name="scope"
                           value={formValues.scope}
@@ -1091,13 +1258,6 @@ export function PortfolioApp() {
                   <p className={styles.footerHeading}>{copy.footerSocials}</p>
                   <div className={styles.footerRule} />
                   <div className={styles.footerSocials}>
-                    <a
-                      href={`mailto:${CONTACT_EMAIL}`}
-                      className={styles.footerSocialLink}
-                      aria-label="E-mail"
-                    >
-                      <MailIcon />
-                    </a>
                     <a
                       href="https://www.instagram.com/devchell"
                       target="_blank"

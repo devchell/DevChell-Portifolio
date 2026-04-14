@@ -1,16 +1,17 @@
 .portfolio {
   --page-bg: #f6f3ed;
   --page-spot: rgba(255, 255, 255, 0.78);
-  --panel-bg: rgba(255, 255, 255, 0.76);
+  --panel-bg: rgba(255, 255, 255, 0.7);
   --panel-solid: #fffdfa;
   --panel-muted: #ece6db;
-  --border: rgba(15, 23, 42, 0.08);
-  --line: rgba(15, 23, 42, 0.1);
+  --border: rgba(15, 23, 42, 0.055);
+  --line: rgba(15, 23, 42, 0.08);
   --text: #2a2f37;
   --text-strong: #131720;
   --text-soft: #555d69;
   --text-faint: #7d8490;
   --text-muted: #8b919c;
+  --radius-ui: 10px;
   --code-bg: #151c27;
   --code-top: #0f141d;
   --code-surface: #1a2331;
@@ -22,9 +23,9 @@
   --accent: #151821;
   --accent-contrast: #f8fafc;
   --highlight: #2ecc71;
-  --shadow-soft: 0 22px 60px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 24px 70px rgba(15, 23, 42, 0.12);
-  --shadow-editor: 0 28px 70px rgba(15, 23, 42, 0.18);
+  --shadow-soft: 0 16px 42px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 18px 52px rgba(15, 23, 42, 0.11);
+  --shadow-editor: 0 22px 58px rgba(15, 23, 42, 0.18);
   --dot-red: #ff5f57;
   --dot-yellow: #febc2e;
   --dot-green: #28c840;
@@ -51,11 +52,11 @@
 .portfolio[data-theme="dark"] {
   --page-bg: #0d1014;
   --page-spot: rgba(31, 39, 55, 0.54);
-  --panel-bg: rgba(18, 24, 34, 0.82);
+  --panel-bg: rgba(18, 24, 34, 0.76);
   --panel-solid: #121824;
   --panel-muted: #161e2b;
-  --border: rgba(255, 255, 255, 0.08);
-  --line: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.08);
   --text: rgba(243, 245, 248, 0.94);
   --text-strong: #ffffff;
   --text-soft: rgba(232, 236, 242, 0.76);
@@ -67,9 +68,9 @@
   --accent: #f3f1eb;
   --accent-contrast: #0d1014;
   --highlight: #32d674;
-  --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.34);
-  --shadow-card: 0 26px 80px rgba(0, 0, 0, 0.36);
-  --shadow-editor: 0 30px 80px rgba(0, 0, 0, 0.4);
+  --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 22px 58px rgba(0, 0, 0, 0.34);
+  --shadow-editor: 0 24px 62px rgba(0, 0, 0, 0.38);
 }
 
 .header {
@@ -83,12 +84,13 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  gap: 1.2rem;
   width: min(100% - 32px, 1220px);
-  min-height: 68px;
+  min-height: 60px;
   margin: 0 auto;
-  padding: 12px 18px;
+  padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-ui);
   background: var(--panel-bg);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(18px);
@@ -105,8 +107,8 @@
 .brand {
   justify-self: start;
   font-family: var(--font-geist-mono), monospace;
-  font-size: 1.18rem;
-  font-weight: 500;
+  font-size: 1.08rem;
+  font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 1;
 }
@@ -115,17 +117,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
+  gap: 1.15rem;
 }
 
 .navButton {
-  min-height: 40px;
-  padding: 0 1rem;
-  border-radius: 999px;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.92rem;
+  position: relative;
+  min-width: 6.25rem;
+  min-height: auto;
+  padding: 0.35rem 0;
+  border-radius: 0;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 0.78rem;
   font-weight: 500;
   line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   transition:
     background 220ms ease,
     color 220ms ease,
@@ -133,15 +139,30 @@
 }
 
 .navButton[data-active="true"] {
-  background: rgba(15, 23, 42, 0.08);
+  background: transparent;
+  opacity: 1;
 }
 
-.portfolio[data-theme="dark"] .navButton[data-active="true"] {
-  background: rgba(255, 255, 255, 0.08);
+.navButton::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.2rem;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.65;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+
+.navButton[data-active="true"]::after {
+  transform: scaleX(1);
 }
 
 .navButton[data-active="false"] {
-  opacity: 0.74;
+  opacity: 0.62;
 }
 
 .headerActions {
@@ -155,11 +176,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-ui);
+  background: rgba(255, 255, 255, 0.28);
   color: var(--text-strong);
   cursor: pointer;
 }
@@ -169,11 +190,19 @@
 }
 
 .scrollRoot {
+  height: 100svh;
   overflow-y: auto;
   overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(17, 24, 39, 0.22) transparent;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.scrollRoot::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .section {
@@ -202,7 +231,7 @@
 
 .heroGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 420px);
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 500px);
   gap: clamp(2rem, 4vw, 4rem);
   align-items: center;
 }
@@ -229,7 +258,7 @@
 .heroTitle {
   margin-top: 1.35rem;
   color: var(--text);
-  font-size: clamp(3.6rem, 6vw, 6.2rem);
+  font-size: clamp(3.35rem, 5.7vw, 5.7rem);
   font-weight: 300;
   line-height: 0.9;
   letter-spacing: -0.045em;
@@ -247,17 +276,20 @@
 
 .heroDescription {
   max-width: 36rem;
+  min-height: 3.6em;
   margin-top: 1.65rem;
   color: var(--text-soft);
-  font-size: 1.15rem;
+  font-size: 1.08rem;
   font-weight: 400;
   line-height: 1.7;
+  text-wrap: pretty;
 }
 
 .heroTagRow {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  min-height: 2.75rem;
   margin-top: 1.7rem;
 }
 
@@ -267,10 +299,10 @@
   min-height: 38px;
   padding: 0 0.95rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-ui);
   background: rgba(255, 255, 255, 0.52);
   color: var(--text-soft);
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 500;
 }
 
@@ -305,7 +337,7 @@
 .secondaryButton {
   min-height: 58px;
   padding: 0 1.35rem;
-  border-radius: 18px;
+  border-radius: var(--radius-ui);
   border: 1px solid transparent;
   font-size: 1rem;
   font-weight: 600;
@@ -329,8 +361,11 @@
 
 .heroCodeCard {
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 26px;
+  border-radius: var(--radius-ui);
   box-shadow: var(--shadow-editor);
+  justify-self: end;
+  width: 100%;
+  max-width: 500px;
 }
 
 .editorShell {
@@ -384,17 +419,29 @@
 }
 
 .heroCode {
-  min-height: 11.2rem;
+  min-height: 11.8rem;
+  font-size: 0.92rem;
 }
 
 .heroCodeFooter {
   display: grid;
   gap: 0.35rem;
+  min-height: 2.6rem;
   margin-top: 1rem;
   color: rgba(245, 247, 255, 0.62);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.76rem;
   letter-spacing: 0.02em;
+}
+
+.codeCursor {
+  display: inline-block;
+  width: 0.62ch;
+  height: 1.05em;
+  margin-left: 0.12rem;
+  vertical-align: -0.12em;
+  background: rgba(245, 247, 255, 0.86);
+  animation: blinkCursor 1s step-end infinite;
 }
 
 .heroCodeAccent {
@@ -438,7 +485,7 @@
   gap: 1.3rem;
   padding: clamp(1.5rem, 4vw, 2.35rem);
   border: 1px solid var(--border);
-  border-radius: 30px;
+  border-radius: var(--radius-ui);
   background: var(--panel-bg);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(14px);
@@ -455,7 +502,8 @@
   letter-spacing: 0.22em;
 }
 
-.sectionKicker::before {
+.sectionKicker::before,
+.sectionKicker::after {
   content: "";
   width: 28px;
   height: 1px;
@@ -465,6 +513,7 @@
 .sectionTitle {
   color: var(--text);
   font-size: clamp(2.65rem, 5vw, 4.5rem);
+  min-height: 1.95em;
   line-height: 0.94;
   letter-spacing: -0.05em;
 }
@@ -512,7 +561,7 @@
   gap: 0.35rem;
   padding: 1rem;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: var(--radius-ui);
   background: rgba(255, 255, 255, 0.38);
 }
 
@@ -536,7 +585,7 @@
 
 .aboutEditor {
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 28px;
+  border-radius: var(--radius-ui);
 }
 
 .projectsHeader {
@@ -553,6 +602,8 @@
   color: var(--text-soft);
   font-size: 1rem;
   line-height: 1.8;
+  min-height: 3.6em;
+  text-wrap: pretty;
 }
 
 .projectCard {
@@ -561,7 +612,7 @@
   max-width: 1040px;
   margin: 0 auto;
   border: 1px solid var(--border);
-  border-radius: 32px;
+  border-radius: var(--radius-ui);
   background: var(--panel-solid);
   box-shadow: var(--shadow-card);
   overflow: hidden;
@@ -606,7 +657,7 @@
   width: 52px;
   height: 52px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-ui);
   background: rgba(255, 255, 255, 0.78);
   color: var(--text-strong);
   box-shadow: var(--shadow-soft);
@@ -679,7 +730,7 @@
   min-height: 36px;
   padding: 0 0.8rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-ui);
   background: var(--panel-bg);
   color: var(--text-soft);
   font-size: 0.82rem;
@@ -697,7 +748,7 @@
   min-height: 44px;
   padding: 0 1rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-ui);
   background: rgba(15, 23, 42, 0.04);
   color: var(--text-strong);
   font-size: 0.9rem;
@@ -733,6 +784,7 @@
   color: var(--text-soft);
   font-size: 1rem;
   line-height: 1.75;
+  min-height: 3.6em;
 }
 
 .contactHeader {
@@ -751,7 +803,7 @@
 
 .contactEditorShell {
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 32px;
+  border-radius: var(--radius-ui);
 }
 
 .contactForm {
@@ -836,7 +888,7 @@
   margin-top: 0.35rem;
   padding: 0.95rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 18px;
+  border-radius: var(--radius-ui);
   background: rgba(255, 255, 255, 0.03);
   line-height: 1.75;
   resize: none;
@@ -867,7 +919,7 @@
 .whatsappButton {
   min-height: 54px;
   padding: 0 1.2rem;
-  border-radius: 18px;
+  border-radius: var(--radius-ui);
   border: 1px solid transparent;
   font-size: 0.96rem;
   font-weight: 700;
@@ -897,7 +949,7 @@
   gap: 1.6rem;
   padding: 1.6rem 1.7rem;
   border: 1px solid var(--border);
-  border-radius: 28px;
+  border-radius: var(--radius-ui);
   background: var(--panel-bg);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(14px);
@@ -942,7 +994,7 @@
 .footerSocials {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 0.75rem;
   margin-top: 1rem;
 }
@@ -954,7 +1006,7 @@
   width: 44px;
   height: 44px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-ui);
   background: rgba(255, 255, 255, 0.42);
   color: var(--text-strong);
 }
@@ -997,6 +1049,18 @@
   }
 }
 
+@keyframes blinkCursor {
+  0%,
+  48% {
+    opacity: 1;
+  }
+
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .themeFade {
   transition:
     background 240ms ease,
@@ -1027,15 +1091,36 @@
   transform: translateY(-2px);
 }
 
+.portfolio[data-locale="en"] .heroTitle {
+  font-size: clamp(3.05rem, 5.2vw, 5.3rem);
+}
+
+.portfolio[data-locale="en"] .sectionTitle {
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+}
+
+.portfolio[data-locale="en"] .heroDescription,
+.portfolio[data-locale="en"] .projectsIntroText,
+.portfolio[data-locale="en"] .contactDescription,
+.portfolio[data-locale="en"] .projectSummaryText {
+  max-width: 40rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scrollRoot {
     scroll-behavior: auto;
+  }
+
+  .codeCursor {
+    animation: none;
+    opacity: 1;
   }
 
   .reveal,
   .revealVisible,
   .themeFade,
   .projectSlide,
+  .codeCursor,
   .primaryButton,
   .secondaryButton,
   .carouselArrow,
@@ -1102,8 +1187,9 @@
 
   .headerInner {
     width: min(100% - 18px, 1220px);
-    min-height: 60px;
+    min-height: 56px;
     padding: 10px 12px;
+    border-radius: var(--radius-ui);
   }
 
   .brand {
@@ -1117,6 +1203,7 @@
   .iconButton {
     width: 38px;
     height: 38px;
+    border-radius: var(--radius-ui);
   }
 
   .section {
@@ -1164,7 +1251,7 @@
   }
 
   .projectCard {
-    border-radius: 24px;
+    border-radius: var(--radius-ui);
   }
 
   .carouselArrow {
@@ -1232,5 +1319,6 @@
 
   .footerInner {
     padding: 1.2rem 1rem;
+    border-radius: var(--radius-ui);
   }
 }
