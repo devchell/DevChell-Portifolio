@@ -5,42 +5,50 @@ Project: DevChell Portfolio
 
 ## Direction
 
-Rebuild the portfolio as a cleaner editorial interface with code-native accents,
-using the original Figma only as loose structural reference.
+Refine the portfolio into a sharper monochrome editorial interface with code-native personality, elevated surfaces, and purposeful motion. The design should feel premium, technical, and clean without relying on borders, dividers, glass effects, or tinted backgrounds.
 
 ## Visual Principles
 
-- Reduce hard borders and section dividers in favor of soft surfaces and shadow.
-- Keep the code language intentional: mono type for `</DevChell>`, About code view,
-  and Contact simulator only.
-- Use a warm off-white canvas in light mode and a restrained graphite palette in dark mode.
-- Let content breathe through spacing, but avoid oversized dead zones.
-- Make every large element earn its footprint.
+- Light mode uses neutral black, white, and grayscale only. No off-white drift.
+- Dark mode uses dark grayscale only. No blue bias.
+- Borders are not part of the visual language; separation comes from spacing, mass, and shadow.
+- Buttons, arrows, and social controls should feel lifted and tactile, not flat.
+- Code surfaces keep mono typography and stronger structure than the rest of the UI.
 
 ## Layout Contract
 
-- Navbar: floating pill shell, softer presence, clear active state, never obscures sections.
-- Hero: two-column desktop, stacked mobile, with one text block and one code support card.
-- About: one clean reading card plus one code card, visually balanced.
-- Projects: screenshot first, metadata second; project name, stack badges, CTA, and summary
-  must keep stable positions even when titles vary in length.
-- Contact: must behave like a code simulator, not a decorative form next to code.
-- Footer: compact, light, and secondary.
+- Navbar: compact floating shell, quieter than before, with active state defined by contrast rather than framing.
+- Hero: left side communicates authority, right side provides animated code credibility.
+- About: reading block and code block stay balanced, with facts treated as elevated tokens.
+- Projects: screenshot stage first, content tray second; CTA and stacks must remain in fixed spatial roles.
+- Contact: fully integrated code simulator with input focus states and action buttons that feel elevated.
+- Footer: two anchored sides, never centered as a whole; left for contact, right for socials, signature below.
 
 ## Typography
 
-- UI copy uses the main sans font.
-- Code contexts use mono font with readable line-height and restrained syntax color.
-- Headings should feel bold and sharp, but not oversized for the viewport.
+- Main UI copy uses the primary sans font.
+- `</devchell>` in the footer uses JetBrains Mono only, but keeps the surrounding text weight and rhythm.
+- Code emulators use mono font exclusively.
+- Headlines stay bold and high-contrast, but body text should remain calm and readable.
 
-## Interaction
+## Motion Contract
 
-- Free scroll, smooth transitions, visible hover states.
-- Section reveal animations stay subtle.
-- Carousels and CTAs must remain obvious on both desktop and mobile.
+- Reveal animations should be smooth and editorial, not flashy.
+- Code lines can stagger in with subtle timing.
+- Hero editor may float gently to add life.
+- Project screenshots should drift slightly while active, and project metadata should re-enter when the project changes.
+- All motion must respect `prefers-reduced-motion`.
+
+## Component Rules
+
+- Primary and secondary CTAs use shadow depth instead of outlines.
+- Project visit button and carousel arrows should feel like tactile controls with soft elevation.
+- Stack badges should feel lightweight, compact, and stable across projects.
+- Form fields in the code simulator should respond on focus through motion and surface change, not borders.
 
 ## Quality Bar
 
-- Desktop, tablet, and mobile all keep the same visual hierarchy.
-- No element may drift into another role because of content length.
-- The page should feel designed, not merely arranged.
+- The interface must look intentional in both light and dark mode.
+- No visible border lines should be required for structure.
+- Motion should clarify hierarchy and interaction, never distract from content.
+- Desktop and mobile must preserve the same visual story and CTA clarity.

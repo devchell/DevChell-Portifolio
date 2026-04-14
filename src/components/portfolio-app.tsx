@@ -1030,7 +1030,10 @@ export function PortfolioApp() {
                 ))}
               </div>
 
-              <div className={`${styles.projectBase} ${styles.themeFade}`}>
+              <div
+                key={`${activeProject.name}-${locale}`}
+                className={`${styles.projectBase} ${styles.themeFade}`}
+              >
                 <div className={styles.projectMetaRow}>
                   <div className={styles.projectLead}>
                     <p className={styles.projectName}>{activeProject.name}</p>
@@ -1290,7 +1293,7 @@ export function PortfolioApp() {
               </div>
 
               <p className={styles.footerSignature}>
-                {copy.footerSignature} <span>{"</DevChell>"}</span>
+                {copy.footerSignature} <span>{"</devchell>"}</span>
               </p>
             </div>
           </div>
