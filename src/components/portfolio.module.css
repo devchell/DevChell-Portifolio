@@ -683,6 +683,7 @@
 
 .projectCard {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
   width: min(100%, 1024px);
   margin: 0 auto;
@@ -695,6 +696,7 @@
 
 .projectFrame {
   position: relative;
+  width: 100%;
   aspect-ratio: 16 / 8.25;
   max-height: 390px;
   overflow: hidden;
