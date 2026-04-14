@@ -490,7 +490,7 @@
 .projectBase {
   position: relative;
   display: grid;
-  grid-template-columns: 150px 29px 1px minmax(0, 1fr);
+  grid-template-columns: minmax(260px, 0.92fr) 1px minmax(0, 1.08fr);
   gap: 1.6rem;
   align-items: center;
   width: calc(100% - 48px);
@@ -521,24 +521,35 @@
   right: -24px;
 }
 
+.projectIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem 1.15rem;
+  align-items: end;
+  min-width: 0;
+}
+
 .projectLead {
   display: grid;
   gap: 0.35rem;
   align-content: center;
+  min-width: 0;
 }
 
 .projectName {
   color: var(--text);
-  font-size: clamp(2.75rem, 4vw, 3.35rem);
+  font-size: clamp(2.5rem, 3.4vw, 3.25rem);
   font-weight: 800;
-  line-height: 1;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
 }
 
 .projectType {
   color: rgba(0, 0, 0, 0.92);
   font-size: 0.92rem;
   font-weight: 200;
-  line-height: 1;
+  line-height: 1.35;
 }
 
 .portfolio[data-theme="dark"] .projectType {
@@ -549,6 +560,8 @@
   display: grid;
   gap: 0.85rem;
   justify-items: center;
+  align-content: center;
+  padding-bottom: 0.2rem;
 }
 
 .stackIcon {
@@ -558,7 +571,7 @@
 
 .projectRule {
   width: 1px;
-  height: 102px;
+  align-self: stretch;
   background: var(--line);
 }
 
@@ -566,6 +579,8 @@
   display: grid;
   gap: 0.35rem;
   padding-right: 3rem;
+  align-content: center;
+  min-width: 0;
 }
 
 .projectSummaryTitle {
@@ -950,6 +965,11 @@
     gap: 1.4rem;
   }
 
+  .projectIntro {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
   .projectStacks {
     grid-auto-flow: column;
     justify-content: start;
@@ -1050,6 +1070,12 @@
     padding: 4.1rem 1rem 1.15rem;
   }
 
+  .projectIntro {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    align-items: start;
+  }
+
   .carouselPrev {
     left: 12px;
     top: 14px;
@@ -1061,6 +1087,7 @@
   }
 
   .projectLead,
+  .projectIntro,
   .projectStacks,
   .projectSummary {
     width: 100%;
@@ -1073,6 +1100,10 @@
 
   .projectName {
     font-size: 2.35rem;
+  }
+
+  .projectStacks {
+    gap: 0.75rem;
   }
 
   .projectSummaryTitle,

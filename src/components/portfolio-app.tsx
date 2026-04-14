@@ -770,22 +770,24 @@ export function PortfolioApp() {
                   <ArrowIcon />
                 </button>
 
-                <div className={styles.projectLead}>
-                  <p className={styles.projectName}>{activeProject.name}</p>
-                  <p className={styles.projectType}>{activeProject.type[locale]}</p>
-                </div>
+                <div className={styles.projectIntro}>
+                  <div className={styles.projectLead}>
+                    <p className={styles.projectName}>{activeProject.name}</p>
+                    <p className={styles.projectType}>{activeProject.type[locale]}</p>
+                  </div>
 
-                <div className={styles.projectStacks}>
-                  {activeProject.stacks.map((stack) => (
-                    <Image
-                      key={stack}
-                      className={styles.stackIcon}
-                      src={STACK_ICON_MAP[stack]}
-                      alt={stack}
-                      width={29}
-                      height={29}
-                    />
-                  ))}
+                  <div className={styles.projectStacks}>
+                    {activeProject.stacks.map((stack) => (
+                      <Image
+                        key={stack}
+                        className={styles.stackIcon}
+                        src={STACK_ICON_MAP[stack]}
+                        alt={stack}
+                        width={29}
+                        height={29}
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 <div className={styles.projectRule} />
