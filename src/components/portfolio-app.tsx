@@ -1513,7 +1513,7 @@ export function PortfolioApp() {
                         >
                           {COUNTRY_OPTIONS.map((option) => (
                             <option key={option.code} value={option.code}>
-                              {option.short} {option.code} - {option.country}
+                              {option.short} {option.code}
                             </option>
                           ))}
                         </select>
