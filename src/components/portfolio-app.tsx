@@ -478,11 +478,6 @@ export function PortfolioApp() {
   const activeProject = PROJECTS[projectIndex];
   const heroFocusRotations = HERO_FOCUS_ROTATIONS[locale];
   const activeHeroFocus = heroFocusRotations[heroFocusIndex];
-  const heroTags = copy.heroMeta
-    .split("·")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem("portfolio-theme", theme);
@@ -664,7 +659,7 @@ export function PortfolioApp() {
             className={styles.brand}
             onClick={() => scrollToSection("hero")}
           >
-            {"</DevChell>"}
+            <span>{"</DevChell>"}</span>
           </button>
 
           <nav className={styles.nav} aria-label="Seções">
@@ -726,10 +721,6 @@ export function PortfolioApp() {
                 >
                   {copy.heroEyebrow}
                 </p>
-                <div
-                  className={`${styles.heroLine} ${styles.reveal} ${styles.revealVisible}`}
-                  data-reveal
-                />
                 <h1
                   className={`${styles.heroTitle} ${styles.reveal} ${styles.revealVisible}`}
                   data-reveal
@@ -743,16 +734,6 @@ export function PortfolioApp() {
                 >
                   {copy.heroDescription}
                 </p>
-                <div
-                  className={`${styles.heroTagRow} ${styles.reveal} ${styles.revealVisible}`}
-                  data-reveal
-                >
-                  {heroTags.map((tag) => (
-                    <span key={tag} className={styles.heroTag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
                 <div
                   className={`${styles.heroButtons} ${styles.reveal} ${styles.revealVisible}`}
                   data-reveal
@@ -787,28 +768,40 @@ export function PortfolioApp() {
                   <div className={`${styles.editorCode} ${styles.heroCode}`}>
                     <div>
                       <span className={styles.editorKeyword}>const</span>
-                      {` ${codeCopy.hero.objectName} = {`}
+                      <span className={styles.editorVariable}>{` ${codeCopy.hero.objectName}`}</span>
+                      <span className={styles.editorOperator}> = </span>
+                      <span className={styles.editorPunctuation}>{"{"}</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.hero.focusKey)}
-                      <span className={styles.editorString}>{'"'}</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
                       <span className={styles.editorString}>{typedHeroFocus}</span>
                       <span className={styles.codeCursor} aria-hidden="true" />
-                      <span className={styles.editorString}>{'"'}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.hero.executionKey)}
-                      <span className={styles.editorString}>{`"${codeCopy.hero.executionValue}"`}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>{codeCopy.hero.executionValue}</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.hero.deliveryKey)}
-                      <span className={styles.editorString}>{`"${codeCopy.hero.deliveryValue}"`}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>{codeCopy.hero.deliveryValue}</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.hero.statusKey)}
-                      <span className={styles.editorNote}>{codeCopy.hero.statusValue}</span>,
+                      <span className={styles.editorBoolean}>{codeCopy.hero.statusValue}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
-                    <div>{"}"}</div>
+                    <div>
+                      <span className={styles.editorPunctuation}>{"}"}</span>
+                    </div>
                   </div>
                   <div className={styles.heroCodeFooter}>
                     <span className={styles.heroCodeAccent}>{codeCopy.hero.footerComment}</span>
@@ -902,67 +895,106 @@ export function PortfolioApp() {
                   <div className={styles.editorCode}>
                     <div>
                       <span className={styles.editorKeyword}>const</span>
-                      {` ${codeCopy.about.objectName} = {`}
+                      <span className={styles.editorVariable}>{` ${codeCopy.about.objectName}`}</span>
+                      <span className={styles.editorOperator}> = </span>
+                      <span className={styles.editorPunctuation}>{"{"}</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.about.nameKey)}
-                      <span className={styles.editorString}>{'"João Vitor Rodrigues"'}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>João Vitor Rodrigues</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.about.aliasKey)}
-                      <span className={styles.editorString}>{'"Chell"'}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>Chell</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>&nbsp;</div>
-                    <div>{`${formatCodeKey(codeCopy.about.stackKey)}[`}</div>
+                    <div>
+                      {formatCodeKey(codeCopy.about.stackKey)}
+                      <span className={styles.editorPunctuation}>[</span>
+                    </div>
                     {codeCopy.about.stackLines.map((line, index) => (
                       <div key={`stack-line-${index}`}>
                         {"    "}
                         {line.map((item, itemIndex) => (
                           <span key={`${item}-${itemIndex}`}>
-                            <span className={styles.editorString}>{`"${item}"`}</span>
-                            {itemIndex < line.length - 1 ? ", " : ""}
+                            <span className={styles.editorStringQuote}>{'"'}</span>
+                            <span className={styles.editorString}>{item}</span>
+                            <span className={styles.editorStringQuote}>{'"'}</span>
+                            {itemIndex < line.length - 1 ? (
+                              <span className={styles.editorPunctuation}>, </span>
+                            ) : null}
                           </span>
                         ))}
                       </div>
                     ))}
-                    <div>{"  ],"}</div>
+                    <div>
+                      <span className={styles.editorPunctuation}>{"  ],"}</span>
+                    </div>
                     <div>&nbsp;</div>
-                    <div>{`${formatCodeKey(codeCopy.about.specialtiesKey)}[`}</div>
+                    <div>
+                      {formatCodeKey(codeCopy.about.specialtiesKey)}
+                      <span className={styles.editorPunctuation}>[</span>
+                    </div>
                     {codeCopy.about.specialtyLines.map((line, index) => (
                       <div key={`specialty-line-${index}`}>
                         {"    "}
                         {line.map((item, itemIndex) => (
                           <span key={`${item}-${itemIndex}`}>
-                            <span className={styles.editorString}>{`"${item}"`}</span>
-                            {itemIndex < line.length - 1 ? ", " : ""}
+                            <span className={styles.editorStringQuote}>{'"'}</span>
+                            <span className={styles.editorString}>{item}</span>
+                            <span className={styles.editorStringQuote}>{'"'}</span>
+                            {itemIndex < line.length - 1 ? (
+                              <span className={styles.editorPunctuation}>, </span>
+                            ) : null}
                           </span>
                         ))}
                       </div>
                     ))}
-                    <div>{"  ],"}</div>
+                    <div>
+                      <span className={styles.editorPunctuation}>{"  ],"}</span>
+                    </div>
                     <div>&nbsp;</div>
                     <div>
                       {formatCodeKey(codeCopy.about.educationKey)}
-                      <span className={styles.editorString}>{`"${codeCopy.about.educationValue}"`}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>{codeCopy.about.educationValue}</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.about.postGradKey)}
-                      <span className={styles.editorString}>{`"${codeCopy.about.postGradValue}"`}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>{codeCopy.about.postGradValue}</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>&nbsp;</div>
                     <div>
                       {formatCodeKey(codeCopy.about.freelanceKey)}
-                      <span className={styles.editorNote}>true</span>,
+                      <span className={styles.editorBoolean}>true</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.about.availableKey)}
-                      <span className={styles.editorNote}>true</span>,
+                      <span className={styles.editorBoolean}>true</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
                     <div>
                       {formatCodeKey(codeCopy.about.approachKey)}
-                      <span className={styles.editorString}>{`"${codeCopy.about.approachValue}"`}</span>,
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorString}>{codeCopy.about.approachValue}</span>
+                      <span className={styles.editorStringQuote}>{'"'}</span>
+                      <span className={styles.editorPunctuation}>,</span>
                     </div>
-                    <div>{"}"}</div>
+                    <div>
+                      <span className={styles.editorPunctuation}>{"}"}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1123,13 +1155,15 @@ export function PortfolioApp() {
                     <div className={styles.contactCodeBlock}>
                       <div className={styles.codeLine}>
                         <span className={styles.editorKeyword}>const</span>
-                        {` ${codeCopy.contact.objectName} = {`}
+                        <span className={styles.editorVariable}>{` ${codeCopy.contact.objectName}`}</span>
+                        <span className={styles.editorOperator}> = </span>
+                        <span className={styles.editorPunctuation}>{"{"}</span>
                       </div>
                       <label className={styles.codeFieldRow}>
                         <span className={styles.codeLabel}>
                           {formatCodeKey(codeCopy.contact.nameKey)}
                         </span>
-                        <span className={styles.editorString}>{'"'}</span>
+                        <span className={styles.editorStringQuote}>{'"'}</span>
                         <input
                           name="name"
                           value={formValues.name}
@@ -1143,13 +1177,14 @@ export function PortfolioApp() {
                           autoComplete="name"
                           className={styles.codeInlineInput}
                         />
-                        <span className={styles.editorString}>{'"'}</span>,
+                        <span className={styles.editorStringQuote}>{'"'}</span>
+                        <span className={styles.editorPunctuation}>,</span>
                       </label>
                       <label className={styles.codeFieldRow}>
                         <span className={styles.codeLabel}>
                           {formatCodeKey(codeCopy.contact.emailKey)}
                         </span>
-                        <span className={styles.editorString}>{'"'}</span>
+                        <span className={styles.editorStringQuote}>{'"'}</span>
                         <input
                           name="email"
                           type="email"
@@ -1164,13 +1199,14 @@ export function PortfolioApp() {
                           autoComplete="email"
                           className={styles.codeInlineInput}
                         />
-                        <span className={styles.editorString}>{'"'}</span>,
+                        <span className={styles.editorStringQuote}>{'"'}</span>
+                        <span className={styles.editorPunctuation}>,</span>
                       </label>
                       <label className={styles.codeFieldRow}>
                         <span className={styles.codeLabel}>
                           {formatCodeKey(codeCopy.contact.whatsappKey)}
                         </span>
-                        <span className={styles.editorString}>{'"'}</span>
+                        <span className={styles.editorStringQuote}>{'"'}</span>
                         <input
                           name="whatsapp"
                           value={formValues.whatsapp}
@@ -1184,9 +1220,13 @@ export function PortfolioApp() {
                           autoComplete="tel"
                           className={styles.codeInlineInput}
                         />
-                        <span className={styles.editorString}>{'"'}</span>,
+                        <span className={styles.editorStringQuote}>{'"'}</span>
+                        <span className={styles.editorPunctuation}>,</span>
                       </label>
-                      <div className={styles.codeLine}>{`${formatCodeKey(codeCopy.contact.scopeKey)}\``} </div>
+                      <div className={styles.codeLine}>
+                        {formatCodeKey(codeCopy.contact.scopeKey)}
+                        <span className={styles.editorStringQuote}>`</span>
+                      </div>
                       <label className={styles.codeTextareaWrap}>
                         <span className={styles.srOnly}>{codeCopy.contact.scopeLabel}</span>
                         <textarea
@@ -1202,14 +1242,26 @@ export function PortfolioApp() {
                           className={styles.codeTextarea}
                         />
                       </label>
-                      <div className={styles.codeLine}>{'  `,'}</div>
-                      <div className={styles.codeLine}>{'};'}</div>
+                      <div className={styles.codeLine}>
+                        <span className={styles.editorStringQuote}>`</span>
+                        <span className={styles.editorPunctuation}>,</span>
+                      </div>
+                      <div className={styles.codeLine}>
+                        <span className={styles.editorPunctuation}>{"};"}</span>
+                      </div>
                     </div>
                   </div>
 
                   <div className={styles.contactActions}>
                     <p className={styles.statusMessage}>{formatStatus(locale, contactState)}</p>
                     <div className={styles.contactButtons}>
+                      <button
+                        type="submit"
+                        className={`${styles.submitButton} ${styles.themeFade}`}
+                      >
+                        {copy.commit}
+                      </button>
+
                       <a
                         href={whatsappLink}
                         target="_blank"
@@ -1218,13 +1270,6 @@ export function PortfolioApp() {
                       >
                         {copy.whatsapp}
                       </a>
-
-                      <button
-                        type="submit"
-                        className={`${styles.submitButton} ${styles.themeFade}`}
-                      >
-                        {copy.commit}
-                      </button>
                     </div>
                   </div>
                 </form>
