@@ -150,10 +150,6 @@ const PROJECTS: Project[] = [
   },
 ];
 
-function clampIndex(value: number, max: number) {
-  return Math.min(Math.max(value, 0), max);
-}
-
 function formatStatus(locale: Locale, state: ContactState) {
   const messages = COPY[locale];
 
@@ -344,7 +340,6 @@ export function PortfolioApp() {
     scope: "",
   });
   const scrollRef = useRef<HTMLDivElement>(null);
-  const wheelLockRef = useRef(false);
 
   const copy = COPY[locale];
   const activeProject = PROJECTS[projectIndex];
@@ -398,49 +393,14 @@ export function PortfolioApp() {
       },
       {
         root,
-        threshold: 0.52,
+        threshold: 0.3,
       },
     );
 
     sections.forEach((section) => observer.observe(section));
 
-    const onWheel = (event: WheelEvent) => {
-      if (window.innerWidth < 1024) return;
-      if (wheelLockRef.current) {
-        event.preventDefault();
-        return;
-      }
-
-      if (Math.abs(event.deltaY) < 24) return;
-      if ((event.target as HTMLElement | null)?.closest("textarea")) return;
-
-      const currentIndex = sections.findIndex((section) => {
-        const distance = Math.abs(section.offsetTop - root.scrollTop);
-        return distance < window.innerHeight * 0.35;
-      });
-
-      const safeIndex = currentIndex === -1 ? 0 : currentIndex;
-      const nextIndex = clampIndex(
-        safeIndex + (event.deltaY > 0 ? 1 : -1),
-        sections.length - 1,
-      );
-
-      if (nextIndex === safeIndex) return;
-
-      event.preventDefault();
-      wheelLockRef.current = true;
-      sections[nextIndex]?.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      window.setTimeout(() => {
-        wheelLockRef.current = false;
-      }, 920);
-    };
-
-    root.addEventListener("wheel", onWheel, { passive: false });
-
     return () => {
       observer.disconnect();
-      root.removeEventListener("wheel", onWheel);
     };
   }, []);
 
