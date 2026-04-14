@@ -22,25 +22,25 @@
   --text-faint: #7a7a7a;
   --text-muted: #8c8c8c;
   --radius-ui: 10px;
-  --code-bg: #11131a;
-  --code-top: #0b0d12;
-  --code-surface: #171c27;
-  --code-text: #d7e1f4;
-  --code-keyword: #c084fc;
-  --code-string: #f8d66d;
-  --code-note: #72f1b8;
-  --code-placeholder: #94a6c7;
-  --code-muted: #7f8ba3;
-  --code-cursor: #7dd3fc;
-  --code-label: #8bd5ff;
+  --code-bg: #ffffff;
+  --code-top: #f3f3f3;
+  --code-surface: #f5f5f5;
+  --code-text: #1f1f1f;
+  --code-keyword: #0000ff;
+  --code-string: #a31515;
+  --code-note: #008000;
+  --code-placeholder: #6a737d;
+  --code-muted: #6a737d;
+  --code-cursor: #007acc;
+  --code-label: #001080;
   --code-border: transparent;
-  --code-gutter: #546077;
-  --code-variable: #f3f7ff;
-  --code-operator: #6b768d;
-  --code-quote: #ffb224;
-  --code-boolean: #56a3ff;
-  --code-editor-shadow: 0 28px 72px rgba(10, 14, 24, 0.34);
-  --code-glow: 0 0 0 1px rgba(125, 211, 252, 0.08), 0 24px 60px rgba(96, 165, 250, 0.12);
+  --code-gutter: #858585;
+  --code-variable: #001080;
+  --code-operator: #666666;
+  --code-quote: #a31515;
+  --code-boolean: #0000ff;
+  --code-editor-shadow: 0 28px 72px rgba(15, 15, 15, 0.16);
+  --code-glow: 0 0 0 1px rgba(0, 122, 204, 0.12), 0 24px 60px rgba(15, 15, 15, 0.08);
   --accent: #111111;
   --accent-contrast: #ffffff;
   --highlight: #111111;
@@ -75,23 +75,23 @@
   --text-soft: #bebebe;
   --text-faint: #8f8f8f;
   --text-muted: #9d9d9d;
-  --code-bg: #0d1017;
-  --code-top: #080a10;
-  --code-surface: #141926;
-  --code-text: #dbe7ff;
-  --code-keyword: #d18cff;
-  --code-string: #f7d46b;
-  --code-note: #76efc0;
-  --code-placeholder: #95a3c0;
-  --code-muted: #75829d;
-  --code-cursor: #7dd3fc;
-  --code-label: #91d2ff;
+  --code-bg: #1e1e1e;
+  --code-top: #181818;
+  --code-surface: #252526;
+  --code-text: #d4d4d4;
+  --code-keyword: #569cd6;
+  --code-string: #ce9178;
+  --code-note: #6a9955;
+  --code-placeholder: #858585;
+  --code-muted: #858585;
+  --code-cursor: #9cdcfe;
+  --code-label: #9cdcfe;
   --code-border: transparent;
-  --code-gutter: #4d5870;
-  --code-variable: #f4f7ff;
-  --code-operator: #69758e;
-  --code-quote: #ffb224;
-  --code-boolean: #63a9ff;
+  --code-gutter: #858585;
+  --code-variable: #d4d4d4;
+  --code-operator: #d4d4d4;
+  --code-quote: #ce9178;
+  --code-boolean: #569cd6;
   --code-editor-shadow: 0 32px 78px rgba(0, 0, 0, 0.5);
   --code-glow: 0 0 0 1px rgba(129, 140, 248, 0.08), 0 26px 64px rgba(34, 197, 94, 0.08);
   --accent: #f3f3f3;
@@ -947,7 +947,6 @@
 }
 
 .codeInlineInput,
-.countryCodeSelect,
 .codeTextarea {
   border: 0;
   background: none;
@@ -965,44 +964,113 @@
   padding: 0;
 }
 
-.countryCodeSelect {
-  min-width: 5.7rem;
-  max-width: 5.7rem;
-  flex: 0 0 5.7rem;
+.countryCodePicker {
+  position: relative;
+  flex: 0 0 5.8rem;
+  width: 5.8rem;
+}
+
+.countryCodeTrigger,
+.countryCodeOption {
+  font-family: var(--font-terminal);
+}
+
+.countryCodeTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  width: 100%;
   min-height: 2rem;
-  padding: 0 1.35rem 0 0.62rem;
+  padding: 0 0.54rem;
+  border: 0;
   border-radius: calc(var(--radius-ui) - 4px);
-  background:
-    linear-gradient(45deg, transparent 50%, currentColor 50%) calc(100% - 0.75rem) 50% / 0.32rem 0.32rem no-repeat,
-    linear-gradient(135deg, currentColor 50%, transparent 50%) calc(100% - 0.55rem) 50% / 0.32rem 0.32rem no-repeat,
-    var(--code-surface);
-  color: var(--code-boolean);
+  background: var(--code-surface);
+  color: var(--code-note);
   cursor: pointer;
-  appearance: none;
-  font-size: 0.86rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
   transition:
-    background-color 180ms ease,
     color 180ms ease,
     transform 180ms ease,
-    box-shadow 180ms ease;
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
-.countryCodeSelect:hover,
-.countryCodeSelect:focus {
+.countryCodeTrigger:hover,
+.countryCodeTrigger[aria-expanded="true"] {
   transform: translateY(-1px);
-  color: var(--code-note);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  color: var(--code-label);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2);
 }
 
-.countryCodeSelect option {
-  background: var(--code-bg);
+.countryCodeTrigger span:first-child,
+.countryCodeOption span {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.countryCodeTrigger strong,
+.countryCodeOption strong {
   color: var(--code-text);
-  font-family: var(--font-terminal);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.countryChevron {
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-left: 0.05rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+.countryCodeMenu {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 0;
+  z-index: 12;
+  display: grid;
+  gap: 0.18rem;
+  width: 6.3rem;
+  max-height: 15.5rem;
+  padding: 0.35rem;
+  overflow-y: auto;
+  border: 0;
+  border-radius: var(--radius-ui);
+  background: var(--code-bg);
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.34);
+}
+
+.countryCodeMenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.countryCodeMenu::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--code-muted);
+}
+
+.countryCodeOption {
+  display: grid;
+  grid-template-columns: 1.7rem 1fr;
+  align-items: center;
+  gap: 0.32rem;
+  min-height: 2rem;
+  padding: 0 0.42rem;
+  border: 0;
+  border-radius: calc(var(--radius-ui) - 5px);
+  background: transparent;
+  color: var(--code-note);
+  cursor: pointer;
+  text-align: left;
+}
+
+.countryCodeOption:hover,
+.countryCodeOption[data-active="true"] {
+  background: var(--code-surface);
+  color: var(--code-label);
 }
 
 .codeInlineInput::placeholder,
@@ -1011,7 +1079,6 @@
 }
 
 .codeInlineInput::selection,
-.countryCodeSelect::selection,
 .codeTextarea::selection {
   background: rgba(125, 211, 252, 0.22);
   color: var(--code-text);
@@ -1020,9 +1087,6 @@
 .codeInlineInput:-webkit-autofill,
 .codeInlineInput:-webkit-autofill:hover,
 .codeInlineInput:-webkit-autofill:focus,
-.countryCodeSelect:-webkit-autofill,
-.countryCodeSelect:-webkit-autofill:hover,
-.countryCodeSelect:-webkit-autofill:focus,
 .codeTextarea:-webkit-autofill,
 .codeTextarea:-webkit-autofill:hover,
 .codeTextarea:-webkit-autofill:focus {
@@ -1722,7 +1786,7 @@
   }
 
   .codeFieldRow > .codeInlineInput,
-  .codeFieldRow > .countryCodeSelect {
+  .codeFieldRow > .countryCodePicker {
     width: 100%;
     min-width: 0;
     padding: 0;
@@ -1730,11 +1794,11 @@
     line-height: 1.35;
   }
 
-  .codeFieldRow > .countryCodeSelect {
+  .codeFieldRow > .countryCodePicker {
     grid-column: 3;
   }
 
-  .codeFieldRow > .countryCodeSelect + .codeInlineInput {
+  .codeFieldRow > .countryCodePicker + .codeInlineInput {
     grid-column: 4;
   }
 

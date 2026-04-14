@@ -639,6 +639,7 @@ export function PortfolioApp() {
   const [heroFocusIndex, setHeroFocusIndex] = useState(0);
   const [heroTypingPhase, setHeroTypingPhase] = useState<HeroTypingPhase>("holding");
   const [typedHeroFocus, setTypedHeroFocus] = useState<string>("SaaS + CRM + Landing Pages");
+  const [isCountryMenuOpen, setIsCountryMenuOpen] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
@@ -926,6 +927,11 @@ export function PortfolioApp() {
     if (statusOverride) {
       setStatusOverride(null);
     }
+  }
+
+  function selectCountryCode(countryCode: string) {
+    updateFormValue("countryCode", countryCode);
+    setIsCountryMenuOpen(false);
   }
 
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -1497,26 +1503,48 @@ export function PortfolioApp() {
                         <span className={styles.editorStringQuote}>{'"'}</span>
                         <span className={styles.editorPunctuation}>,</span>
                       </label>
-                      <label className={styles.codeFieldRow}>
+                      <div className={styles.codeFieldRow}>
                         <span className={styles.codeLabel}>
                           {formatCodeKey(codeCopy.contact.whatsappKey)}
                         </span>
                         <span className={styles.editorStringQuote}>{'"'}</span>
-                        <select
-                          name="countryCode"
-                          value={formValues.countryCode}
-                          onChange={(event) => updateFormValue("countryCode", event.target.value)}
-                          autoComplete="tel-country-code"
-                          required
-                          className={styles.countryCodeSelect}
-                          aria-label={locale === "pt" ? "Codigo do pais" : "Country code"}
-                        >
-                          {COUNTRY_OPTIONS.map((option) => (
-                            <option key={option.code} value={option.code}>
-                              {option.short} {option.code}
-                            </option>
-                          ))}
-                        </select>
+                        <div className={styles.countryCodePicker}>
+                          <input
+                            type="hidden"
+                            name="countryCode"
+                            value={formValues.countryCode}
+                          />
+                          <button
+                            type="button"
+                            className={styles.countryCodeTrigger}
+                            onClick={() => setIsCountryMenuOpen((current) => !current)}
+                            aria-haspopup="listbox"
+                            aria-expanded={isCountryMenuOpen}
+                            aria-label={locale === "pt" ? "Selecionar codigo do pais" : "Select country code"}
+                          >
+                            <span>{selectedCountry.short}</span>
+                            <strong>{selectedCountry.code}</strong>
+                            <span className={styles.countryChevron} aria-hidden="true" />
+                          </button>
+                          {isCountryMenuOpen ? (
+                            <div className={styles.countryCodeMenu} role="listbox">
+                              {COUNTRY_OPTIONS.map((option) => (
+                                <button
+                                  key={option.code}
+                                  type="button"
+                                  className={styles.countryCodeOption}
+                                  data-active={option.code === formValues.countryCode}
+                                  onClick={() => selectCountryCode(option.code)}
+                                  role="option"
+                                  aria-selected={option.code === formValues.countryCode}
+                                >
+                                  <span>{option.short}</span>
+                                  <strong>{option.code}</strong>
+                                </button>
+                              ))}
+                            </div>
+                          ) : null}
+                        </div>
                         <input
                           name="whatsapp"
                           value={formValues.whatsapp}
@@ -1529,7 +1557,7 @@ export function PortfolioApp() {
                         />
                         <span className={styles.editorStringQuote}>{'"'}</span>
                         <span className={styles.editorPunctuation}>,</span>
-                      </label>
+                      </div>
                       <div className={styles.codeLine}>
                         {formatCodeKey(codeCopy.contact.scopeKey)}
                         <span className={styles.editorStringQuote}>`</span>
