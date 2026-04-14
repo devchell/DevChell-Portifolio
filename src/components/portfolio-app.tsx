@@ -12,6 +12,7 @@ type HeroTypingPhase = "typing" | "holding" | "deleting";
 type Project = {
   name: string;
   url: string;
+  locked?: boolean;
   type: Record<Locale, string>;
   description: Record<Locale, string>;
   stacks: string[];
@@ -104,6 +105,7 @@ const COPY = {
       "Projetos pensados para converter, posicionar e sustentar operação com clareza visual e técnica.",
     projectSummary: "Resumo do projeto",
     projectVisit: "Visitar projeto",
+    projectUnavailable: "Projeto privado",
     contactLabel: "CONTATO",
     contactTitleStrong: "Briefing em código,",
     contactTitleSoft: "execução sem ruído.",
@@ -155,6 +157,7 @@ const COPY = {
       "Projects designed to convert, position brands, and support real operations with visual and technical clarity.",
     projectSummary: "Project overview",
     projectVisit: "Visit project",
+    projectUnavailable: "Private project",
     contactLabel: "CONTACT",
     contactTitleStrong: "Code-like brief,",
     contactTitleSoft: "clean execution.",
@@ -211,7 +214,8 @@ const PROJECTS: Project[] = [
   },
   {
     name: "UltraRubber",
-    url: "https://ultrarubber.com.br",
+    url: "",
+    locked: true,
     type: {
       pt: "Landing Page & CRM",
       en: "Landing Page & CRM",
@@ -705,7 +709,7 @@ export function PortfolioApp() {
   useEffect(() => {
     const id = window.setInterval(() => {
       rotateScreens();
-    }, 5200);
+    }, 5000);
 
     return () => {
       window.clearInterval(id);
@@ -1332,13 +1336,15 @@ export function PortfolioApp() {
                   <ArrowIcon />
                 </button>
 
-                <a
-                  href={activeProject.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.projectLinkOverlay}
-                  aria-label={`${copy.openProjectAria} ${activeProject.name}`}
-                />
+                {!activeProject.locked ? (
+                  <a
+                    href={activeProject.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.projectLinkOverlay}
+                    aria-label={`${copy.openProjectAria} ${activeProject.name}`}
+                  />
+                ) : null}
 
                 {activeProject.screenshots.map((shot, index) => (
                   <div
@@ -1383,16 +1389,27 @@ export function PortfolioApp() {
                       ))}
                     </div>
 
-                    <a
-                      href={activeProject.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.projectVisit}
-                      aria-label={`${copy.openProjectAria} ${activeProject.name}`}
-                    >
-                      <span>{copy.projectVisit}</span>
-                      <ExternalIcon />
-                    </a>
+                    {activeProject.locked ? (
+                      <button
+                        type="button"
+                        className={`${styles.projectVisit} ${styles.projectVisitLocked}`}
+                        disabled
+                      >
+                        <span>{copy.projectUnavailable}</span>
+                        <ExternalIcon />
+                      </button>
+                    ) : (
+                      <a
+                        href={activeProject.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles.projectVisit}
+                        aria-label={`${copy.openProjectAria} ${activeProject.name}`}
+                      >
+                        <span>{copy.projectVisit}</span>
+                        <ExternalIcon />
+                      </a>
+                    )}
                   </div>
                 </div>
 

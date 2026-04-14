@@ -695,10 +695,10 @@
 
 .projectFrame {
   position: relative;
-  aspect-ratio: 16 / 6.7;
-  max-height: 430px;
+  aspect-ratio: 16 / 7.4;
+  max-height: 460px;
   overflow: hidden;
-  background: var(--panel-muted);
+  background: var(--code-bg);
 }
 
 .projectLinkOverlay {
@@ -711,19 +711,16 @@
   position: absolute;
   inset: 0;
   opacity: 0;
-  transform: scale(1.02);
-  transition:
-    opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .projectSlide[data-active="true"] {
   opacity: 1;
-  transform: scale(1);
 }
 
 .projectImage {
-  object-fit: contain;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .carouselArrow {
@@ -836,6 +833,14 @@
 
 .portfolio[data-theme="dark"] .projectVisit {
   background: var(--panel-muted);
+}
+
+.projectVisitLocked,
+.projectVisitLocked:hover {
+  cursor: not-allowed;
+  opacity: 0.56;
+  transform: none;
+  box-shadow: none;
 }
 
 .projectRule {
@@ -1428,16 +1433,6 @@
   }
 }
 
-@keyframes projectPan {
-  from {
-    transform: scale(1.02) translate3d(0, 1.5%, 0);
-  }
-
-  to {
-    transform: scale(1.08) translate3d(0, -1.5%, 0);
-  }
-}
-
 @keyframes cardRise {
   from {
     opacity: 0;
@@ -1467,10 +1462,6 @@
     background 240ms ease,
     color 240ms ease,
     box-shadow 240ms ease;
-}
-
-.projectSlide[data-active="true"] .projectImage {
-  animation: projectPan 5.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .projectBase {
@@ -1601,7 +1592,7 @@
   }
 
   .projectFrame {
-    aspect-ratio: 16 / 8.2;
+    aspect-ratio: 16 / 8.8;
   }
 
   .projectUtilities,
@@ -1720,7 +1711,7 @@
   }
 
   .projectFrame {
-    aspect-ratio: 16 / 9.4;
+    aspect-ratio: 16 / 9.2;
     max-height: 260px;
   }
 
