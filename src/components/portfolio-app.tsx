@@ -603,7 +603,7 @@ export function PortfolioApp() {
   useEffect(() => {
     const id = window.setInterval(() => {
       rotateScreens();
-    }, 3000);
+    }, 5200);
 
     return () => {
       window.clearInterval(id);
