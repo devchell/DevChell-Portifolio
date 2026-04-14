@@ -31,6 +31,24 @@ const WHATSAPP_MESSAGE = {
   en: "Hi João, I would like to request a quote for a project.",
 } as const;
 
+const COUNTRY_OPTIONS = [
+  { code: "+55", country: "Brasil", short: "BR", placeholder: "(11) 9 9999-9999" },
+  { code: "+1", country: "United States", short: "US", placeholder: "(555) 123-4567" },
+  { code: "+44", country: "United Kingdom", short: "UK", placeholder: "0712 345 678" },
+  { code: "+351", country: "Portugal", short: "PT", placeholder: "912 345 678" },
+  { code: "+34", country: "España", short: "ES", placeholder: "612 345 678" },
+  { code: "+33", country: "France", short: "FR", placeholder: "6 12 34 56 78" },
+  { code: "+49", country: "Deutschland", short: "DE", placeholder: "151 234 567 89" },
+  { code: "+39", country: "Italia", short: "IT", placeholder: "312 345 6789" },
+  { code: "+52", country: "México", short: "MX", placeholder: "55 1234 5678" },
+  { code: "+54", country: "Argentina", short: "AR", placeholder: "11 2345 6789" },
+  { code: "+56", country: "Chile", short: "CL", placeholder: "9 1234 5678" },
+  { code: "+57", country: "Colombia", short: "CO", placeholder: "300 123 4567" },
+  { code: "+81", country: "日本", short: "JP", placeholder: "90 1234 5678" },
+  { code: "+82", country: "대한민국", short: "KR", placeholder: "10 1234 5678" },
+  { code: "+61", country: "Australia", short: "AU", placeholder: "412 345 678" },
+] as const;
+
 const STACK_ICON_MAP: Record<string, string> = {
   "Next.js": "/stacks/nextjs.svg",
   TypeScript: "/stacks/typescript.svg",
@@ -332,10 +350,18 @@ function normalizeCountryCode(value: string) {
   return digits ? `+${digits}` : "+";
 }
 
+function getCountryOption(countryCode: string) {
+  return COUNTRY_OPTIONS.find((option) => option.code === countryCode) ?? COUNTRY_OPTIONS[0];
+}
+
 function getPhoneDigitLimit(countryCode: string) {
   if (countryCode === "+55") return 11;
   if (countryCode === "+1") return 10;
-  if (countryCode === "+44" || countryCode === "+351") return 9;
+  if (countryCode === "+44" || countryCode === "+351" || countryCode === "+34" || countryCode === "+56") return 9;
+  if (countryCode === "+33") return 10;
+  if (countryCode === "+49") return 11;
+  if (countryCode === "+39" || countryCode === "+52" || countryCode === "+54" || countryCode === "+57" || countryCode === "+81" || countryCode === "+82") return 10;
+  if (countryCode === "+61") return 9;
   return 15;
 }
 
@@ -364,6 +390,28 @@ function formatLocalPhone(countryCode: string, value: string) {
     if (digits.length <= 3) return digits;
     if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
     return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 9)}`;
+  }
+
+  if (["+34", "+56", "+61"].includes(countryCode)) {
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 9)}`;
+  }
+
+  if (countryCode === "+33") {
+    return digits.replace(/(\d{1,2})(?=(\d{2})+(?!\d))/g, "$1 ").trim();
+  }
+
+  if (countryCode === "+49") {
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 11)}`;
+  }
+
+  if (["+39", "+52", "+54", "+57", "+81", "+82"].includes(countryCode)) {
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
   }
 
   return digits.replace(/(\d{1,3})(?=(\d{3})+(?!\d))/g, "$1 ").trim();
@@ -883,6 +931,7 @@ export function PortfolioApp() {
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     WHATSAPP_MESSAGE[locale],
   )}`;
+  const selectedCountry = getCountryOption(formValues.countryCode);
   const scopeCharacterCount = formValues.scope.length;
   const isScopeOverLimit = scopeCharacterCount > CONTACT_SCOPE_MAX_LENGTH;
 
@@ -1453,23 +1502,26 @@ export function PortfolioApp() {
                           {formatCodeKey(codeCopy.contact.whatsappKey)}
                         </span>
                         <span className={styles.editorStringQuote}>{'"'}</span>
-                        <input
+                        <select
                           name="countryCode"
                           value={formValues.countryCode}
                           onChange={(event) => updateFormValue("countryCode", event.target.value)}
-                          placeholder={copy.placeholders.countryCode}
                           autoComplete="tel-country-code"
-                          inputMode="tel"
                           required
-                          pattern="^\+\d{1,4}$"
-                          className={`${styles.codeInlineInput} ${styles.countryCodeInput}`}
+                          className={styles.countryCodeSelect}
                           aria-label={locale === "pt" ? "Codigo do pais" : "Country code"}
-                        />
+                        >
+                          {COUNTRY_OPTIONS.map((option) => (
+                            <option key={option.code} value={option.code}>
+                              {option.short} {option.code} - {option.country}
+                            </option>
+                          ))}
+                        </select>
                         <input
                           name="whatsapp"
                           value={formValues.whatsapp}
                           onChange={(event) => updateFormValue("whatsapp", event.target.value)}
-                          placeholder={copy.placeholders.whatsapp}
+                          placeholder={selectedCountry.placeholder}
                           autoComplete="tel"
                           inputMode="tel"
                           required

@@ -947,6 +947,7 @@
 }
 
 .codeInlineInput,
+.countryCodeSelect,
 .codeTextarea {
   border: 0;
   background: none;
@@ -964,11 +965,19 @@
   padding: 0;
 }
 
-.countryCodeInput {
-  min-width: 3.8rem;
-  max-width: 4.6rem;
-  flex: 0 0 4.4rem;
+.countryCodeSelect {
+  min-width: 8.8rem;
+  max-width: 11rem;
+  flex: 0 0 10rem;
+  padding: 0;
   color: var(--code-boolean);
+  cursor: pointer;
+  appearance: none;
+}
+
+.countryCodeSelect option {
+  background: var(--code-bg);
+  color: var(--code-text);
 }
 
 .codeInlineInput::placeholder,
@@ -977,6 +986,7 @@
 }
 
 .codeInlineInput::selection,
+.countryCodeSelect::selection,
 .codeTextarea::selection {
   background: rgba(125, 211, 252, 0.22);
   color: var(--code-text);
@@ -985,6 +995,9 @@
 .codeInlineInput:-webkit-autofill,
 .codeInlineInput:-webkit-autofill:hover,
 .codeInlineInput:-webkit-autofill:focus,
+.countryCodeSelect:-webkit-autofill,
+.countryCodeSelect:-webkit-autofill:hover,
+.countryCodeSelect:-webkit-autofill:focus,
 .codeTextarea:-webkit-autofill,
 .codeTextarea:-webkit-autofill:hover,
 .codeTextarea:-webkit-autofill:focus {
@@ -1677,13 +1690,14 @@
 
   .codeFieldRow {
     display: grid;
-    grid-template-columns: 6.5rem auto minmax(3.8rem, 4.4rem) minmax(0, 1fr) auto auto;
+    grid-template-columns: 6.5rem auto minmax(7rem, 8.2rem) minmax(0, 1fr) auto auto;
     align-items: center;
     gap: 0.1rem 0.18rem;
     padding: 0.18rem 0;
   }
 
-  .codeFieldRow > .codeInlineInput {
+  .codeFieldRow > .codeInlineInput,
+  .codeFieldRow > .countryCodeSelect {
     width: 100%;
     min-width: 0;
     padding: 0;
@@ -1691,12 +1705,12 @@
     line-height: 1.35;
   }
 
-  .codeFieldRow > .countryCodeInput {
+  .codeFieldRow > .countryCodeSelect {
     grid-column: 3;
     max-width: none;
   }
 
-  .codeFieldRow > .countryCodeInput + .codeInlineInput {
+  .codeFieldRow > .countryCodeSelect + .codeInlineInput {
     grid-column: 4;
   }
 
