@@ -1,5 +1,6 @@
 const CONTACT_EMAIL = "rodriguessnts@outlook.com";
-const FORMSUBMIT_AJAX_URL = `https://formsubmit.co/ajax/${encodeURIComponent(CONTACT_EMAIL)}`;
+const RESEND_API_URL = "https://api.resend.com/emails";
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "DevChell Portfolio <onboarding@resend.dev>";
 const MAX_FIELD_LENGTH = 1200;
 
 type Locale = "pt" | "en";
@@ -11,11 +12,6 @@ type ContactPayload = {
   scope?: string;
   locale?: Locale;
   website?: string;
-};
-
-type FormSubmitResponse = {
-  success?: boolean | string;
-  message?: string;
 };
 
 function getLocale(value: unknown): Locale {
@@ -32,24 +28,29 @@ function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function responseMessage(locale: Locale, key: "invalid" | "spam" | "inactive" | "provider" | "success") {
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function responseMessage(locale: Locale, key: "invalid" | "spam" | "missingConfig" | "provider" | "success") {
   const messages = {
     pt: {
-      invalid: "Revise os dados do formulário antes de enviar.",
-      spam: "Envio bloqueado pela proteção anti-spam.",
-      inactive:
-        "O FormSubmit ainda precisa ser ativado no e-mail rodriguessnts@outlook.com. Abra o e-mail 'Activate Form' e clique no link de ativação.",
-      provider:
-        "Não consegui concluir o envio agora. Se o e-mail já foi ativado, tente novamente em instantes ou use o WhatsApp.",
-      success: "Solicitação enviada. Vou responder pelo e-mail informado.",
+      invalid: "Revise os dados do formulario antes de enviar.",
+      spam: "Envio bloqueado pela protecao anti-spam.",
+      missingConfig: "Envio ainda nao configurado. Defina a chave RESEND_API_KEY na Vercel.",
+      provider: "Nao consegui concluir o envio agora. Tente novamente em instantes ou use o WhatsApp.",
+      success: "Solicitacao enviada. Vou responder pelo e-mail informado.",
     },
     en: {
       invalid: "Please review the form fields before sending.",
       spam: "Submission blocked by anti-spam protection.",
-      inactive:
-        "FormSubmit still needs to be activated in the rodriguessnts@outlook.com inbox. Open the 'Activate Form' email and click the activation link.",
-      provider:
-        "I could not complete the submission right now. If the email has already been activated, try again shortly or use WhatsApp.",
+      missingConfig: "Email sending is not configured yet. Define RESEND_API_KEY on Vercel.",
+      provider: "I could not complete the submission right now. Try again shortly or use WhatsApp.",
       success: "Request sent. I will reply to your email shortly.",
     },
   } as const;
@@ -59,6 +60,7 @@ function responseMessage(locale: Locale, key: "invalid" | "spam" | "inactive" | 
 
 export async function POST(request: Request) {
   try {
+    const resendApiKey = process.env.RESEND_API_KEY;
     const body = (await request.json()) as ContactPayload;
     const locale = getLocale(body.locale);
     const name = sanitize(body.name, 120);
@@ -75,56 +77,51 @@ export async function POST(request: Request) {
       return Response.json({ message: responseMessage(locale, "invalid") }, { status: 400 });
     }
 
-    const response = await fetch(FORMSUBMIT_AJAX_URL, {
+    if (!resendApiKey) {
+      return Response.json({ message: responseMessage(locale, "missingConfig") }, { status: 500 });
+    }
+
+    const emailText = `*Nome:* ${name}
+*Email:* ${email}
+*WhatsApp:* ${whatsapp}
+
+${scope}`;
+
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; color: #111111; line-height: 1.6;">
+        <p><strong>Nome:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>WhatsApp:</strong> ${escapeHtml(whatsapp)}</p>
+        <div style="height: 1px; background: #dddddd; margin: 20px 0;"></div>
+        <p style="white-space: pre-wrap;">${escapeHtml(scope)}</p>
+      </div>
+    `;
+
+    const response = await fetch(RESEND_API_URL, {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        Authorization: `Bearer ${resendApiKey}`,
         "Content-Type": "application/json",
-        Origin: "https://devchell.vercel.app",
-        Referer: "https://devchell.vercel.app/",
       },
       body: JSON.stringify({
-        name,
-        email,
-        whatsapp,
-        scope,
-        _subject: `Novo pedido de orçamento - ${name}`,
-        _template: "table",
-        _replyto: email,
-        _blacklist: "bitcoin,casino,viagra,poker,loan,seo agency,guest post,backlink",
-        _honey: "",
+        from: RESEND_FROM_EMAIL,
+        to: [CONTACT_EMAIL],
+        reply_to: email,
+        subject: `Novo pedido de orcamento - ${name}`,
+        text: emailText,
+        html: emailHtml,
       }),
     });
 
-    const contentType = response.headers.get("content-type") ?? "";
-    const formSubmitResult = contentType.includes("application/json")
-      ? ((await response.json()) as FormSubmitResponse)
-      : ({ message: await response.text() } satisfies FormSubmitResponse);
-    const providerMessage = String(formSubmitResult.message ?? "");
-    const providerSuccess = formSubmitResult.success === true || formSubmitResult.success === "true";
-
-    if (!response.ok || !providerSuccess) {
-      const looksInactive =
-        providerMessage.toLowerCase().includes("activate form") ||
-        providerMessage.toLowerCase().includes("check your email") ||
-        providerMessage.toLowerCase().includes("needs activation");
-
-      return Response.json(
-        {
-          message: looksInactive
-            ? responseMessage(locale, "inactive")
-            : responseMessage(locale, "provider"),
-        },
-        { status: looksInactive ? 409 : 502 },
-      );
+    if (!response.ok) {
+      return Response.json({ message: responseMessage(locale, "provider") }, { status: 502 });
     }
 
     return Response.json({ message: responseMessage(locale, "success") });
   } catch {
     return Response.json(
       {
-        message:
-          "Não consegui concluir o envio agora. Tente novamente em instantes ou use o WhatsApp.",
+        message: "Nao consegui concluir o envio agora. Tente novamente em instantes ou use o WhatsApp.",
       },
       { status: 500 },
     );
