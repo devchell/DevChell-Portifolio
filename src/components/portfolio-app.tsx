@@ -276,8 +276,7 @@ const COPY = {
 const PROJECTS: Project[] = [
   {
     name: "Vetta",
-    url: "",
-    locked: true,
+    url: "https://vetta-devchells-projects.vercel.app/",
     title: {
       pt: "Landing Page",
       en: "Landing Page",
