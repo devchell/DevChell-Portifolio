@@ -686,6 +686,7 @@
   gap: 1rem;
   width: min(100%, 1120px);
   margin: 0 auto;
+  overflow: visible;
 }
 
 .projectRailShell {
@@ -694,12 +695,14 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: stretch;
   gap: 0.8rem;
+  z-index: 4;
 }
 
 .projectRailViewportFrame {
   position: relative;
   min-width: 0;
   overflow: visible;
+  z-index: 1;
 }
 
 .projectRailViewportFrame::before,
@@ -769,6 +772,8 @@
   box-shadow: var(--shadow-pill);
   cursor: pointer;
   align-self: center;
+  position: relative;
+  z-index: 5;
   transition:
     transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
     background 220ms ease,
@@ -791,6 +796,8 @@
   cursor: pointer;
   box-shadow: 0 10px 20px rgba(15, 15, 15, 0.08);
   scroll-snap-align: start;
+  position: relative;
+  z-index: 2;
   transition:
     transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
     background 220ms ease,
@@ -803,6 +810,7 @@
   background: var(--panel-solid);
   color: var(--text-strong);
   box-shadow: 0 16px 28px rgba(15, 15, 15, 0.14);
+  z-index: 3;
 }
 
 .portfolio[data-theme="dark"] .projectRailButton {
@@ -842,6 +850,8 @@
   border-radius: var(--radius-ui);
   background: var(--panel-solid);
   box-shadow: var(--shadow-card);
+  position: relative;
+  z-index: 1;
 }
 
 .projectMediaPanel,
