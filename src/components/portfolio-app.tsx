@@ -193,6 +193,8 @@ const COPY = {
       "Descreva objetivo, contexto e escopo como se estivesse abrindo uma issue bem escrita. Eu organizo o resto.",
     submitCommand: "git push",
     submitCaption: "enviar briefing",
+    submitLoadingCommand: "pushing...",
+    submitLoadingCaption: "enviando briefing",
     whatsapp: "Conversar no WhatsApp",
     whatsappCaption: "resposta rápida",
     statusIdle: "Preencha o formulário e eu retorno pelo e-mail informado.",
@@ -252,6 +254,8 @@ const COPY = {
       "Describe the goal, context, and scope as if you were opening a well-written issue. I will structure the rest.",
     submitCommand: "git push",
     submitCaption: "send brief",
+    submitLoadingCommand: "pushing...",
+    submitLoadingCaption: "sending brief",
     whatsapp: "Talk on WhatsApp",
     whatsappCaption: "quick reply",
     statusIdle: "Fill out the form and I will reply to the email you provide.",
@@ -1370,6 +1374,9 @@ export function PortfolioApp() {
   const totalProjects = String(PROJECTS.length).padStart(2, "0");
   const screenshotSequence = String(screenshotIndex + 1).padStart(2, "0");
   const screenshotTotal = String(activeProject.screenshots.length).padStart(2, "0");
+  const isSubmitting = contactState === "loading";
+  const submitCommandLabel = isSubmitting ? copy.submitLoadingCommand : copy.submitCommand;
+  const submitCaptionLabel = isSubmitting ? copy.submitLoadingCaption : copy.submitCaption;
 
   return (
     <div className={styles.portfolio} data-locale={locale} data-theme={theme}>
@@ -2128,16 +2135,16 @@ export function PortfolioApp() {
                       <button
                         type="submit"
                         className={`${styles.submitButton} ${styles.themeFade}`}
-                        disabled={contactState === "loading"}
-                        aria-busy={contactState === "loading"}
+                        disabled={isSubmitting}
+                        aria-busy={isSubmitting}
                       >
                         <span className={styles.submitTerminal}>
                           <span className={styles.submitPrompt} aria-hidden="true">
                             $
                           </span>
-                          <span className={styles.submitCommand}>{copy.submitCommand}</span>
+                          <span className={styles.submitCommand}>{submitCommandLabel}</span>
                         </span>
-                        <span className={styles.submitMeta}>{copy.submitCaption}</span>
+                        <span className={styles.submitMeta}>{submitCaptionLabel}</span>
                       </button>
 
                       <a
