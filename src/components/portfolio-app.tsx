@@ -1,7 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, startTransition, useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from "react";
+import {
+  FormEvent,
+  startTransition,
+  useEffect,
+  useEffectEvent,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import styles from "./portfolio.module.css";
 
 type Theme = "light" | "dark";
@@ -1101,14 +1110,42 @@ export function PortfolioApp() {
   });
 
   useEffect(() => {
-    const id = window.setInterval(() => {
+    if (activeProject.screenshots.length <= 1) {
+      return;
+    }
+
+    const id = window.setTimeout(() => {
       rotateScreens();
-    }, 5000);
+    }, 6000);
 
     return () => {
-      window.clearInterval(id);
+      window.clearTimeout(id);
     };
-  }, [projectIndex]);
+  }, [projectIndex, screenshotIndex, activeProject.screenshots.length]);
+
+  useLayoutEffect(() => {
+    const root = scrollRef.current;
+    if (!root) return;
+
+    const previousScrollRestoration = "scrollRestoration" in window.history
+      ? window.history.scrollRestoration
+      : null;
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    root.scrollTop = 0;
+
+    return () => {
+      if (previousScrollRestoration) {
+        window.history.scrollRestoration = previousScrollRestoration;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const railViewport = projectRailViewportRef.current;
@@ -1370,10 +1407,6 @@ export function PortfolioApp() {
   const selectedCountry = getCountryOption(formValues.countryCode);
   const scopeCharacterCount = formValues.scope.length;
   const isScopeOverLimit = scopeCharacterCount > CONTACT_SCOPE_MAX_LENGTH;
-  const projectSequence = String(projectIndex + 1).padStart(2, "0");
-  const totalProjects = String(PROJECTS.length).padStart(2, "0");
-  const screenshotSequence = String(screenshotIndex + 1).padStart(2, "0");
-  const screenshotTotal = String(activeProject.screenshots.length).padStart(2, "0");
   const isSubmitting = contactState === "loading";
   const submitCommandLabel = isSubmitting ? copy.submitLoadingCommand : copy.submitCommand;
   const submitCaptionLabel = isSubmitting ? copy.submitLoadingCaption : copy.submitCaption;
@@ -1776,9 +1809,6 @@ export function PortfolioApp() {
                         onClick={() => selectProject(index)}
                         aria-pressed={index === projectIndex}
                       >
-                        <span className={styles.projectRailIndex}>
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
                         <span className={styles.projectRailName}>{project.name}</span>
                         <span className={styles.projectRailType}>{project.title[locale]}</span>
                       </button>
@@ -1801,13 +1831,6 @@ export function PortfolioApp() {
                 className={`${styles.projectFeatured} ${styles.themeFade}`}
               >
                 <div className={styles.projectMediaPanel}>
-                  <div className={styles.projectMediaHeader}>
-                    <span className={styles.projectMediaLabel}>{copy.projectsLabel}</span>
-                    <span className={styles.projectMediaCount}>
-                      {projectSequence} / {totalProjects}
-                    </span>
-                  </div>
-
                   <div className={styles.projectFrame}>
                     <button
                       type="button"
@@ -1866,16 +1889,12 @@ export function PortfolioApp() {
                         />
                       ))}
                     </div>
-                    <span className={styles.projectScreenshotCount}>
-                      {screenshotSequence} / {screenshotTotal}
-                    </span>
                   </div>
                 </div>
 
                 <div className={styles.projectAside}>
                   <div className={styles.projectMetaRow}>
                     <div className={styles.projectLead}>
-                      <span className={styles.projectSpotlightIndex}>{projectSequence}</span>
                       <p className={styles.projectName}>{activeProject.name}</p>
                       <p className={styles.projectType}>{activeProject.title[locale]}</p>
                     </div>
