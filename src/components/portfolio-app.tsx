@@ -298,6 +298,27 @@ const COPY = {
 
 const PROJECTS: Project[] = [
   {
+    name: "Tevio",
+    url: "https://tevio.com.br",
+    title: {
+      pt: "Plataforma de Infraestrutura",
+      en: "Infrastructure Platform",
+    },
+    description: {
+      pt: "Plataforma de infraestrutura cloud para times que precisam de performance real, com landing editorial, portal de clientes, onboarding automatizado e gestão de planos VPS, Dedicado e Colocation.",
+      en: "Cloud infrastructure platform for teams needing real performance, with an editorial landing, client portal, automated onboarding, and VPS, Dedicated, and Colocation plan management.",
+    },
+    technologies: ["React", "TypeScript", "Supabase", "Tailwind"],
+    systems: ["Landing Page", "Dashboard", "SaaS"],
+    screenshots: [
+      "/projects/tevio/tevio-01.png",
+      "/projects/tevio/tevio-02.png",
+      "/projects/tevio/tevio-03.png",
+      "/projects/tevio/tevio-04.png",
+      "/projects/tevio/tevio-05.png",
+    ],
+  },
+  {
     name: "Vetta",
     url: "https://vetta-devchells-projects.vercel.app/",
     title: {
